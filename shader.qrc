@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shader/skybox.fs.glsl</file>
+        <file>shader/skybox.vs.glsl</file>
+        <file>shader/ground.fs.glsl</file>
+        <file>shader/ground.vs.glsl</file>
+        <file>shader/airshower.fs.glsl</file>
+        <file>shader/airshower.vs.glsl</file>
+        <file>shader/solarpanel.fs.glsl</file>
+        <file>shader/solarpanel.vs.glsl</file>
+	<file>shader/detector.fs.glsl</file>
+	<file>shader/detector.vs.glsl</file>
+    </qresource>
+</RCC>

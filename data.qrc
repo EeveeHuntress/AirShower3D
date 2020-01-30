@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/dat">
+	<file>data/track000001.em.woweights.txt</file>
+	<file>data/track000001.mu.txt</file>
+	<file>data/track000001.hd.txt</file>
+    </qresource>
+</RCC>
