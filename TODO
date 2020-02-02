@@ -2,10 +2,14 @@ bugfixes:
 
 * make camera follow the shower front also for inclined showers
 
-performance:
+operability:
 
 * take airshower data out of qrc -> user defined path to shower files
   - check afterwards again for maximum file size (rn 1.5G em-showers chrash at compile time)
+
+* path to airshower data, shower axis and primary type to config file 
+
+performance:
 
 * runtime optimization: calculate VAO once with fixed time steps and give to GPU instead
   of calculating VAO anew for every step (too much CPU!)
@@ -23,3 +27,5 @@ features:
 * mountains in the background (either 3d models or some nice texture)
 
 * widget to select which shower components shall be drawn
+
+* as soon as primary type can be read from the config: add extra line for primary particle starting at a fixed distance away fromthe first interaction
