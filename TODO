@@ -1,0 +1,19 @@
+performance:
+
+* take airshower data out of qrc -> user defined path to shower files
+  - check afterwards again for maximum file size (rn 1.5G em-showers chrash at compile time)
+
+* runtime optimization: calculate VAO once with fixed time steps and give to GPU instead
+  of calculating VAO anew for every step (too much CPU!)
+
+* read directly from CORSIKA binary instead of acsi table (or at least include binary2asci converter to repo)
+
+features:
+
+* shadows
+
+* remove texture from tanks
+
+* color tanks wrt time when hit by a particle
+
+* mountains in the background (either 3d models or some nice texture)
