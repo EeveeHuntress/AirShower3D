@@ -1,3 +1,7 @@
+bugfixes:
+
+* make camera follow the shower front also for inclined showers
+
 performance:
 
 * take airshower data out of qrc -> user defined path to shower files
@@ -17,3 +21,5 @@ features:
 * color tanks wrt time when hit by a particle
 
 * mountains in the background (either 3d models or some nice texture)
+
+* widget to select which shower components shall be drawn
