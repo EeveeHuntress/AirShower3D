@@ -51,7 +51,7 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
     glm::vec3 showerAxis = glm::vec3(0.0f,-1.0f,0.0f);
 
     //shower data is divided into three types
-    _airshower_em = std::make_shared<Airshower>("Test_Shower_em", ":/dat/data/track000001.em.woweights.txt", "em", showerAxis);
+    _airshower_em = std::make_shared<Airshower>("Test_Shower_em", ":/dat/data/track000001.em.txt", "em", showerAxis);
     _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", ":/dat/data/track000001.hd.txt", "hd", showerAxis);
     _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", ":/dat/data/track000001.mu.txt", "mu", showerAxis);
 
