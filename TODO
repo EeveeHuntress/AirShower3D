@@ -2,6 +2,8 @@ bugfixes:
 
 * make camera follow the shower front also for inclined showers
 
+* scale resolution according to window size
+
 operability:
 
 * take airshower data out of qrc -> user defined path to shower files
