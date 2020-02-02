@@ -308,6 +308,8 @@ void Airshower::readFromFile()
 	    // condition is fulfilled
 	    if(_min.y>zend)
 	      _min = glm::vec3(xend,zend,yend);
+	    if(_max.y<zstart)
+	      _max = glm::vec3(xstart,zstart,ystart);
 	    //create new track
 	    positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
 	    timestamps.push_back(tstart/_maxTime);
