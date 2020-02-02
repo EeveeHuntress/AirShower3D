@@ -297,24 +297,22 @@ void Airshower::readFromFile()
 
             if(_maxTime<tend && _type.compare("em")==0)
                 _maxTime = tend;
-//            if(_min.y>zend)
-//                _min = glm::vec3(xend,zend,yend);
 
-            float cutoff = 55000;
-            float cutoffz = 1000000;
-
-            if( _type.compare("em")==0 && ( (zend>cutoffz) ^ (abs(yend)<cutoff &&  abs(xend)<cutoff )) )
-            {}
-            else
-            {
-                if(_min.y>zend)
-                    _min = glm::vec3(xend,zend,yend);
-                //create new track
-                positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
-                timestamps.push_back(tstart/_maxTime);
-                positions.push_back(glm::vec3(xend,zend,yend)*_sizeFactor);
-                timestamps.push_back(tend/_maxTime);
-            }
+	    // thinning:
+	    //
+            // float cutoff = 55000; // "radius" (i.e. square...) in cm
+            // float cutoffz = 1000000; // above ground in cm
+	    //
+	    // in case an additional thinning shall be implemented,
+	    // skip the following code block if the thinning
+	    // condition is fulfilled
+	    if(_min.y>zend)
+	      _min = glm::vec3(xend,zend,yend);
+	    //create new track
+	    positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
+	    timestamps.push_back(tstart/_maxTime);
+	    positions.push_back(glm::vec3(xend,zend,yend)*_sizeFactor);
+	    timestamps.push_back(tend/_maxTime);
         }
 
     ///TODO: normalize data
