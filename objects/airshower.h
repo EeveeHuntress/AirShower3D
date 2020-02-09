@@ -66,10 +66,11 @@ public:
     virtual void setMaxTime(float newTime);
 
     /**
-     * change value of _maxTime
+     * @brief getShowerAxis
      */
-//    virtual float setMaxTime();
-
+    virtual glm::vec3 getShowerAxis();
+    
+    
     /**
      * @brief getShowerFront
      * @return position of shower front

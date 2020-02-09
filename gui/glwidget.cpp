@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <cmath>
 #include <GL/glew.h>
 
 #include "glwidget.hpp"
@@ -48,7 +49,12 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
     _skybox = std::make_shared<Skybox>("Skybox", ":/res/images/stars.bmp");
 
     //shower axis that was used to create the data
-    glm::vec3 showerAxis = glm::vec3(0.0f,-1.0f,0.0f);
+    float axis_theta = 30.f*M_PI_2/90.f;
+    float axis_phi = 0.f*M_PI_2/90.f;
+    float axis_x = std::sin(axis_theta)*std::cos(axis_phi);
+    float axis_y = std::cos(axis_theta);
+    float axis_z = std::sin(axis_theta)*std::sin(axis_phi);
+    glm::vec3 showerAxis = -1.f*glm::vec3(axis_x,axis_y,axis_z);
 
     //shower data is divided into three types
     _airshower_em = std::make_shared<Airshower>("Test_Shower_em", ":/dat/data/track000001.em.txt", "em", showerAxis);
@@ -103,8 +109,7 @@ void GLWidget::initializeGL()
 
     _ground->init();
 
-    glm::vec3 showerAxis = glm::vec3(0.0f,-1.0f,0.0f);
-    _sfcenter = std::make_shared<ShowerFrontCenter>("ShowerFrontCenter", showerAxis, glm::vec3(0.0f,(_airshower_em->getMaxY()-_airshower_em->getMinY())/100000,0.0f));
+    _sfcenter = std::make_shared<ShowerFrontCenter>("ShowerFrontCenter", _airshower_em->getShowerAxis(), glm::vec3(0.0f,(_airshower_em->getMaxY()-_airshower_em->getMinY())/100000,0.0f));
 
     _sfcenter->init();
 

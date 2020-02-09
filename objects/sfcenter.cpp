@@ -51,7 +51,7 @@ void ShowerFrontCenter::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         }
     }
 
-    glm::vec3 end = _startPos + (_showerAxis* (-1/_showerAxis.y) * _startPos.y) ;
+    glm::vec3 end = (_startPos.y/_showerAxis.y)*glm::vec3(_showerAxis.x, 0, _showerAxis.z);
     _pos = _startPos + Config::time * (end - _startPos);
 
     _modelViewMatrix = modelViewMatrix;

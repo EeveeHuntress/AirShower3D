@@ -330,6 +330,14 @@ void Airshower::readFromFile()
     }
 }
 
+
+
+glm::vec3 Airshower::getShowerAxis()
+{
+    return this->_axis;
+}
+
+
 glm::vec3 Airshower::getShowerFront()
 {
     return this->_showerFront;
