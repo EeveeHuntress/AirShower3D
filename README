@@ -5,3 +5,48 @@ authors: Evelyn Krause, Onur Fatih Hokkaoemeroglu, Philip Ruehl
 date: 02.02.2020
 
 ###################
+
+**************
+Prerequisites:
+**************
+
+Required are cmake (>= version 2.8.6), QT5OpenGL 5.4.0
+
+**************
+Build (Linux):
+**************
+
+1. download the source to e.g. /home/me/AirShower3D
+
+2. create and enter a build directory 
+
+  mkdir /home/me/AirShower3D-buid
+  cd /home/me/AirShower3D-build
+
+3. configure the build with cmake by providing the root
+ path of the source (should contain a CMakeLists.txt)
+
+ cmake ../Airshower
+
+4. Install...
+
+  make [-j <N>]
+
+ where <N> is the number of threads you want make to
+ use in parallel (might speed things up a bit, though
+ the expression in parenthesis is optional).
+
+****
+Run:
+****
+
+Just execute the binary (with the example path from above):
+
+ /home/me/Airshower-build/airshower3d
+
+to display the default airshower included in this
+repository.
+
+To change the airshower data, just edit the configfile.cfg
+that is created in the same directory as the airshower3d
+executable to fit your needs. 

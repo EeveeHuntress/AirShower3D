@@ -1,15 +1,5 @@
 bugfixes:
 
-* Relative path from executable to configfile.in is now HARDCODED in glwidget.cpp. This has to 
-  be changed: default configfile.in (i.e. configfile.in containing the path to the default 
-  shower) should be written to install-directory during compile time. Then, only relative path 
-  between executable and configfile.in should be hardcoded. Even better: user should be able 
-  to customize the location of the config using a command line input like 
-
-    airshower3d -c <path-to>/configfile.in
-
-  (move this item to the feature-section of this list as soon as its not an urgend bug anymore)
-
 * scale resolution according to window size
 
 operability:
@@ -41,3 +31,8 @@ features:
 * as soon as primary type can be read from the config: add extra line for primary particle starting at a fixed distance away fromthe first interaction
 
 * Show relative time conversion factor in gui (next to "Animation: 1.0x")
+
+* User should be able to customize the location of the config using a command line input like 
+
+    airshower3d -c <path-to>/configfile.cfg
+

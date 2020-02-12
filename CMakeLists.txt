@@ -5,7 +5,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 cmake_policy(SET CMP0017 NEW)
 cmake_policy(SET CMP0020 NEW)
 
-project("GraPra 2019 - AirShower3D" C CXX)
+project("AirShower3D" C CXX)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
@@ -74,6 +74,8 @@ add_executable(airshower3d
     shader/solarpanel.vs.glsl
 
 )
+
+configure_file(configfile.cfg.in configfile.cfg)
 
 include_directories(${CMAKE_SOURCE_DIR}/glbase ${OPENGL_INCLUDE_DIR})
 

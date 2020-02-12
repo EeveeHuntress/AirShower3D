@@ -49,7 +49,7 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
 
     _skybox = std::make_shared<Skybox>("Skybox", ":/res/images/stars.bmp");
 
-    ConfigFile configfile("../AirShower3D/configfile.in");
+    ConfigFile configfile("configfile.cfg");
     configfile.readInto<std::string>(Config::pathToAirshowerFiles, "PathToAirshowerFiles");
     configfile.readInto<float>(Config::showerAxisZenith, "ShowerAxisZenith");
     configfile.readInto<float>(Config::showerAxisAzimuth, "ShowerAxisAzimuth");
