@@ -44,6 +44,10 @@ public:
     static float detectorDistance;  /// distance between detectors
     static bool distanceChanged;    /// checker for changing distance
 
+    static std::string pathToAirshowerFiles; // path to the airshower data files
+
+    static float showerAxisZenith;           // zenith angle of the simulated shower axis
+    static float showerAxisAzimuth;          // azimuth angle of the simulated shower axis
 };
 
 #endif // CONFIG_H

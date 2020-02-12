@@ -18,6 +18,7 @@
 #include <glm/gtx/transform.hpp>
 
 #include "gui/config.h"
+#include "gui/ConfigFile.h"
 
 #include "objects/detector.h"
 #include "objects/skybox.h"
@@ -48,18 +49,23 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
 
     _skybox = std::make_shared<Skybox>("Skybox", ":/res/images/stars.bmp");
 
-    //shower axis that was used to create the data
-    float axis_theta = 30.f*M_PI_2/90.f;
-    float axis_phi = 0.f*M_PI_2/90.f;
-    float axis_x = std::sin(axis_theta)*std::cos(axis_phi);
-    float axis_y = std::cos(axis_theta);
-    float axis_z = std::sin(axis_theta)*std::sin(axis_phi);
+    ConfigFile configfile("../AirShower3D/configfile.in");
+    configfile.readInto<std::string>(Config::pathToAirshowerFiles, "PathToAirshowerFiles");
+    configfile.readInto<float>(Config::showerAxisZenith, "ShowerAxisZenith");
+    configfile.readInto<float>(Config::showerAxisAzimuth, "ShowerAxisAzimuth");
+
+    //convert shower axis to carthesian coordinates 
+    Config::showerAxisZenith *= M_PI_2/90.f;
+    Config::showerAxisAzimuth *= M_PI_2/90.f;
+    float axis_x = std::sin(Config::showerAxisZenith)*std::cos(Config::showerAxisAzimuth);
+    float axis_y = std::cos(Config::showerAxisZenith);
+    float axis_z = std::sin(Config::showerAxisZenith)*std::sin(Config::showerAxisAzimuth);
     glm::vec3 showerAxis = -1.f*glm::vec3(axis_x,axis_y,axis_z);
 
     //shower data is divided into three types
-    _airshower_em = std::make_shared<Airshower>("Test_Shower_em", ":/dat/data/track000001.em.txt", "em", showerAxis);
-    _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", ":/dat/data/track000001.hd.txt", "hd", showerAxis);
-    _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", ":/dat/data/track000001.mu.txt", "mu", showerAxis);
+    _airshower_em = std::make_shared<Airshower>("Test_Shower_em", (Config::pathToAirshowerFiles + "track000001.em.txt").c_str(), "em", showerAxis);
+    _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", (Config::pathToAirshowerFiles + "track000001.hd.txt").c_str(), "hd", showerAxis);
+    _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", (Config::pathToAirshowerFiles + "track000001.mu.txt").c_str(), "mu", showerAxis);
 
     _ground=std::make_shared<Ground>("Ground", ":/res/images/grass.bmp");
     _crown= std::make_shared<Crown>("Crown");

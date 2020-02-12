@@ -32,3 +32,9 @@ bool Config::crownLevelsChanged=false;
 
 float Config::detectorDistance=3.0f;
 bool Config::distanceChanged=false;
+
+std::string Config::pathToAirshowerFiles="data/";
+
+float Config::showerAxisZenith=30.f;
+
+float Config::showerAxisAzimuth=0.f;

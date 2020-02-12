@@ -49,6 +49,7 @@ add_executable(airshower3d
     gui/glwidget.cpp
     gui/glwidget.hpp
     gui/config.cpp
+    gui/ConfigFile.cpp
 
     objects/drawable.cpp
     objects/skybox.cpp
