@@ -2,6 +2,8 @@ bugfixes:
 
 * scale resolution according to window size
 
+* make path for airshower data in config file indepentent of folder name
+
 operability:
 
 * take airshower data out of qrc -> user defined path to shower files
