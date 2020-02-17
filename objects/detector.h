@@ -58,10 +58,6 @@ protected:
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> normals;
     std::vector<unsigned int> indices;
-    std::vector<glm::vec2> texcoords;
-
-
-    GLuint textureID;
 
     std::vector<SolarPanel> _panel;
 
@@ -81,12 +77,6 @@ protected:
      * @see Drawable::getFragmentShader()
      */
     virtual std::string getFragmentShader() const override;
-
-//    /**
-//     * @see Drawable::loadTexture()
-//     */
-//    virtual void loadTexture();
-
 };
 
 

@@ -12,8 +12,6 @@
 #include <stack>
 
 #include "glbase/gltool.hpp"
-#include "image/image.h"
-#include "glbase/texload.hpp"
 
 #include "gui/config.h"
 
@@ -257,25 +255,6 @@ void Detector::createObject(){
     // check for errors
     VERIFY(CG::checkError());
 }
-
-//void Detector::loadTexture()
-//{
-//    glGenTextures(1,&textureID);
-//    glBindTexture(GL_TEXTURE_2D,textureID);
-
-//    Image image(":/res/images/wall.png");
-
-//    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,image.getWidth(),image.getHeight(),0,GL_RGBA,GL_UNSIGNED_BYTE,image.getData());
-
-//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-//    glGenerateMipmap(GL_TEXTURE_2D);
-
-//    VERIFY(CG::checkError());
-//}
 
 
 std::string Detector::getVertexShader() const

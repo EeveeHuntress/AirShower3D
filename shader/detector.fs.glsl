@@ -2,8 +2,6 @@
 
 // get color from vertex shader
 in vec3 vcolor;
-//texture coordinates from vertex shader
-smooth in vec2 st;
 
 // send color to screen
 layout(location = 0) out vec4 fcolor;
@@ -22,9 +20,6 @@ uniform vec3 kd;
 uniform vec3 ks;
 uniform vec3 ka;
 uniform float shininess;
-
-//
-uniform sampler2D detectorTex;
 
 void main(void)
 {
@@ -48,12 +43,7 @@ void main(void)
         //specular lighting
 
         vec3 spec= ks*Ls*pow(max(dot(r,showerLight),0.0),shininess);
-
-
-        vec4 texCol = texture2D(detectorTex, st);
-
         vec3 color = (ambient+diffuse+spec);
 
         fcolor = vec4(vcolor,1)*(vec4(color,1));
-//        fcolor = (texCol*vec4(color,1));
 }
