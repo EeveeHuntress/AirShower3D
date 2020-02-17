@@ -67,6 +67,11 @@ protected:
 
     std::shared_ptr<ShowerFrontCenter> _showerFront;
 
+    //everything needed for shadows
+    GLuint depthMapFBO;
+    GLuint depthMap;
+
+    void loadFBO();
 };
 
 #endif // GROUND_H

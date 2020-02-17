@@ -72,6 +72,8 @@ protected:
     GLuint _vertexArrayObject;  /**< The vertex array object containing the vertices */
     glm::mat4 _modelViewMatrix; /**< The model view matrix to get the object into model view space */
 
+    GLuint _frameBufferObject;
+
     /**
      * @brief initShader Initializes the shader.
      *
@@ -129,6 +131,7 @@ protected:
      * with data.
      */
     virtual void createObject() = 0;
+
 };
 
 

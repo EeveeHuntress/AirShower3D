@@ -32,6 +32,8 @@ void Ground::init()
 
     Drawable::init();
 
+    loadFBO();
+
     loadTexture();
 }
 
@@ -112,45 +114,6 @@ void Ground::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
 
 }
 
-void Ground::setLights(std::shared_ptr<ShowerFrontCenter> front)
-{
-    _showerFront=front;
-}
-
-std::string Ground::getVertexShader() const
-{
-    return Drawable::loadShaderFile(":/shader/ground.vs.glsl");
-}
-
-std::string Ground::getFragmentShader() const
-{
-    return Drawable::loadShaderFile(":/shader/ground.fs.glsl");
-}
-
-
-void Ground::loadTexture()
-{
-    glGenTextures(1,&textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-
-    Image image(_textureLocation);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getWidth(),image.getHeight(),0,GL_RGBA, GL_UNSIGNED_BYTE, image.getData());
-
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-//    std::cout<<image.getHeight()<<std::endl;
-
-    VERIFY(CG::checkError());
-}
-
 void Ground::createObject()
 {
     ///TODO: your code here
@@ -227,3 +190,64 @@ void Ground::createObject()
 
 }
 
+
+void Ground::loadTexture()
+{
+    glGenTextures(1,&textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    Image image(_textureLocation);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getWidth(),image.getHeight(),0,GL_RGBA, GL_UNSIGNED_BYTE, image.getData());
+
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+//    std::cout<<image.getHeight()<<std::endl;
+
+    VERIFY(CG::checkError());
+}
+
+void Ground::loadFBO()
+{
+    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+    glGenFramebuffers(1, &depthMapFBO);
+    // create depth texture
+    glGenTextures(1, &depthMap);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // attach depth texture as FBO's depth buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
+
+void Ground::setLights(std::shared_ptr<ShowerFrontCenter> front)
+{
+    _showerFront=front;
+}
+
+std::string Ground::getVertexShader() const
+{
+    return Drawable::loadShaderFile(":/shader/ground.vs.glsl");
+}
+
+std::string Ground::getFragmentShader() const
+{
+    return Drawable::loadShaderFile(":/shader/ground.fs.glsl");
+}
