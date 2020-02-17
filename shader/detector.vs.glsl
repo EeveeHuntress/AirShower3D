@@ -25,7 +25,7 @@ void main(void)
     norm=vnorm;
 
 
-    vcolor = vec3(1.0f);
+    vcolor = vec3(1.0f,0.9f,0.6f);
 
     // pass texture coordinates to fragment shader
     st = texcoords;

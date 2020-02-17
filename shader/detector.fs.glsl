@@ -54,6 +54,6 @@ void main(void)
 
         vec3 color = (ambient+diffuse+spec);
 
-//        fcolor = vec4(vcolor,1)*(vec4(color,1));
-        fcolor = (texCol*vec4(color,1));
+        fcolor = vec4(vcolor,1)*(vec4(color,1));
+//        fcolor = (texCol*vec4(color,1));
 }

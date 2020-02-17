@@ -34,8 +34,6 @@ void Detector::init()
 
     _panel.push_back(SolarPanel(_name));
     _panel.back().init();
-
-    loadTexture();
 }
 
 void Detector::recreate()
@@ -59,17 +57,12 @@ void Detector::draw(glm::mat4 projection_matrix) const
     // Load program
     glUseProgram(_program);
 
-    //activate texture
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D,textureID);
-
     // bin vertex array object
     glBindVertexArray(_vertexArrayObject);
 
     // set parameter
     glUniformMatrix4fv(glGetUniformLocation(_program, "projection_matrix"), 1, GL_FALSE, glm::value_ptr(projection_matrix));
     glUniformMatrix4fv(glGetUniformLocation(_program, "modelview_matrix"), 1, GL_FALSE, glm::value_ptr(_modelViewMatrix));
-    glUniform1i(glGetUniformLocation(_program, "detextorTex"), 0);
 
     //lighting values
 
@@ -135,7 +128,6 @@ void Detector::createObject(){
     positions.clear();
     indices.clear();
     normals.clear();
-    texcoords.clear();
 
     int subdivs = Config::subdivCount;
     float radius = Config::radius;
@@ -155,7 +147,6 @@ void Detector::createObject(){
         float phi1 = iphi * (2* M_PI)/Nphis ; //left
         float phi2 = (iphi+1.) * (2* M_PI)/Nphis ; //right
 
-
         float x1 = radius * cos(phi1);
         float y1 = radius * sin(phi1);
         float z1 = 0.0f;
@@ -172,52 +163,38 @@ void Detector::createObject(){
         float y4 = radius * sin(phi2);
         float z4 = hight;
 
-        float texLeft = 1.0f - float(iphi)/float(Nphis);
-        float texMiddle = 1.0f - float(iphi+1.0f/2.0f)/float(Nphis);
-        float texRight = 1.0f - float(iphi+1)/float(Nphis);
-
         //middle of top
         positions.push_back(glm::vec3(0.0f,0.0f,0.0f)*rotx); //0+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,-1,0)));
-        texcoords.push_back(glm::vec2(texMiddle,1.0f));
         //middle of bottom
         positions.push_back(glm::vec3(0.0f,0.0f,hight)*rotx);//1+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,1,0)));
-        texcoords.push_back(glm::vec2(texMiddle,0.0f));
 
         //bottom left for floor
         positions.push_back(glm::vec3(x1,y1,z1)*rotx);//2+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,-1,0)));
-        texcoords.push_back(glm::vec2(texLeft,1.0f));
         //bottom right for floor
         positions.push_back(glm::vec3(x2,y2,z2)*rotx);//3+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,-1,0)));
-        texcoords.push_back(glm::vec2(texRight,1.0f));
         //top left for ceiling
         positions.push_back(glm::vec3(x3,y3,z3)*rotx);//4+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,1,0)));
-        texcoords.push_back(glm::vec2(texLeft,0.0f));
         //top right for ceiling
         positions.push_back(glm::vec3(x4,y4,z4)*rotx);//5+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,1,0)));
-        texcoords.push_back(glm::vec2(texRight,0.0f));
 
         //bottom left for mantle
         positions.push_back(glm::vec3(x1,y1,z1)*rotx);//6+indexCounter
         normals.push_back(glm::normalize(positions.at(indexCounter+6)));
-        texcoords.push_back(glm::vec2(texLeft,1.0f));
         //bottom right for mantle
         positions.push_back(glm::vec3(x2,y2,z2)*rotx);//7+indexCounter
         normals.push_back(glm::normalize(positions.at(indexCounter+7)));
-        texcoords.push_back(glm::vec2(texRight,1.0f));
         //top left for mantle
         positions.push_back(glm::vec3(x3,y3,z3)*rotx);//8+indexCounter
         normals.push_back(glm::normalize(positions.at(indexCounter+8)));
-        texcoords.push_back(glm::vec2(texLeft,0.0f));
         //top right for mantle
         positions.push_back(glm::vec3(x4,y4,z4)*rotx);//9+indexCounter
         normals.push_back(glm::normalize(positions.at(indexCounter+9)));
-        texcoords.push_back(glm::vec2(texRight,0.0f));
 
 
         //bottom
@@ -270,43 +247,35 @@ void Detector::createObject(){
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, 0, 0);
     glEnableVertexAttribArray(1);
 
-    GLuint texture_buffer;
-    glGenBuffers(1, &texture_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, texture_buffer);
-    glBufferData(GL_ARRAY_BUFFER, texcoords.size() * sizeof(glm::vec2), texcoords.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, 0, 0);
-    glEnableVertexAttribArray(2);
-
     // unbind vertex array object
     glBindVertexArray(0);
     // delete buffers (the data is stored in the vertex array object)
     glDeleteBuffers(1, &position_buffer);
     glDeleteBuffers(1, &index_buffer);
-    glDeleteBuffers(1, &texture_buffer);
 
 
     // check for errors
     VERIFY(CG::checkError());
 }
 
-void Detector::loadTexture()
-{
-    glGenTextures(1,&textureID);
-    glBindTexture(GL_TEXTURE_2D,textureID);
+//void Detector::loadTexture()
+//{
+//    glGenTextures(1,&textureID);
+//    glBindTexture(GL_TEXTURE_2D,textureID);
 
-    Image image(":/res/images/wall.png");
+//    Image image(":/res/images/wall.png");
 
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,image.getWidth(),image.getHeight(),0,GL_RGBA,GL_UNSIGNED_BYTE,image.getData());
+//    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,image.getWidth(),image.getHeight(),0,GL_RGBA,GL_UNSIGNED_BYTE,image.getData());
 
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glGenerateMipmap(GL_TEXTURE_2D);
+//    glGenerateMipmap(GL_TEXTURE_2D);
 
-    VERIFY(CG::checkError());
-}
+//    VERIFY(CG::checkError());
+//}
 
 
 std::string Detector::getVertexShader() const

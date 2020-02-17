@@ -22,8 +22,6 @@ features:
 
 * shadows
 
-* remove texture from tanks
-
 * color tanks wrt time when hit by a particle
 
 * mountains in the background (either 3d models or some nice texture)

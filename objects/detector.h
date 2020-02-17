@@ -82,10 +82,10 @@ protected:
      */
     virtual std::string getFragmentShader() const override;
 
-    /**
-     * @see Drawable::loadTexture()
-     */
-    virtual void loadTexture();
+//    /**
+//     * @see Drawable::loadTexture()
+//     */
+//    virtual void loadTexture();
 
 };
 
