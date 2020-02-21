@@ -119,8 +119,8 @@ void Skybox::createObject()
     positions.push_back(glm::vec3(-1, 1, 1) *1.f); // 5 -> 3
     positions.push_back(glm::vec3( 1,-1,-1) *1.f); // 6 -> 4
     positions.push_back(glm::vec3( 1, 1,-1) *1.f); // 7 -> 5
-    positions.push_back(glm::vec3( 1, 1, 1) *1.f); // 2 -> 6
-    positions.push_back(glm::vec3( 1,-1, 1) *1.f); // 3 -> 7
+    positions.push_back(glm::vec3( 1,-1, 1) *1.f); // 2 -> 6
+    positions.push_back(glm::vec3( 1, 1, 1) *1.f); // 3 -> 7
 
     texCoordOptions.push_back(glm::vec2(0,0));
     texCoordOptions.push_back(glm::vec2(0,1));
@@ -146,18 +146,18 @@ void Skybox::createObject()
         // back
         indices.push_back(0);
         texCoords.push_back(glm::vec2(0,0));
-        indices.push_back(1);
-        texCoords.push_back(glm::vec2(0,1));
         indices.push_back(4);
         texCoords.push_back(glm::vec2(1,0));
+        indices.push_back(1);
+        texCoords.push_back(glm::vec2(0,1));
 
 
         indices.push_back(1);
         texCoords.push_back(texCoordOptions.at(1));
-        indices.push_back(5);
-        texCoords.push_back(texCoordOptions.at(3));
         indices.push_back(4);
         texCoords.push_back(texCoordOptions.at(2));
+        indices.push_back(5);
+        texCoords.push_back(texCoordOptions.at(3));
 
         // top
         indices.push_back(1);

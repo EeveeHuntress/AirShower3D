@@ -45,6 +45,8 @@ public:
 
 protected:
 
+    float _longside;
+    float _shortside;
 
     /**
      * @see Drawable::getVertexShader()

@@ -4,8 +4,6 @@ bugfixes:
 
 * make path for airshower data in config file indepentent of folder name
 
-* fix solar panel position, texture and size
-
 operability:
 
 * take airshower data out of qrc -> user defined path to shower files
