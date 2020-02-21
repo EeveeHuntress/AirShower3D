@@ -1,10 +1,3 @@
-/*
- * Copyright (C) 2013, 2014
- * Computer Graphics Group, University of Siegen
- * Written by Martin Lambers <martin.lambers@uni-siegen.de>
- * All rights reserved.
- */
-
 #include <iostream>
 #include <cmath>
 #include <GL/glew.h>
@@ -44,15 +37,15 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
     _updateTimer.start(18);
     _stopWatch.start();
 
-
-    // create all drawable elements
-
-    _skybox = std::make_shared<Skybox>("Skybox", ":/res/images/stars.bmp");
+    cameraBelow=false;
 
     ConfigFile configfile("configfile.cfg");
     configfile.readInto<std::string>(Config::pathToAirshowerFiles, "PathToAirshowerFiles");
     configfile.readInto<float>(Config::showerAxisZenith, "ShowerAxisZenith");
     configfile.readInto<float>(Config::showerAxisAzimuth, "ShowerAxisAzimuth");
+
+    // create all drawable elements
+    _skybox = std::make_shared<Skybox>("Skybox", ":/res/images/stars.bmp");
 
     //convert shower axis to carthesian coordinates 
     Config::showerAxisZenith *= M_PI_2/90.f;
@@ -62,13 +55,13 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
     float axis_z = std::sin(Config::showerAxisZenith)*std::sin(Config::showerAxisAzimuth);
     glm::vec3 showerAxis = -1.f*glm::vec3(axis_x,axis_y,axis_z);
 
+    _ground=std::make_shared<Ground>("Ground", ":/res/images/grass.bmp");
+    _crown= std::make_shared<Crown>("Crown");
+
     //shower data is divided into three types
     _airshower_em = std::make_shared<Airshower>("Test_Shower_em", (Config::pathToAirshowerFiles + "track000001.em.txt").c_str(), "em", showerAxis);
     _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", (Config::pathToAirshowerFiles + "track000001.hd.txt").c_str(), "hd", showerAxis);
     _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", (Config::pathToAirshowerFiles + "track000001.mu.txt").c_str(), "mu", showerAxis);
-
-    _ground=std::make_shared<Ground>("Ground", ":/res/images/grass.bmp");
-    _crown= std::make_shared<Crown>("Crown");
 }
 
 void GLWidget::show()
@@ -140,7 +133,7 @@ void GLWidget::paintGL()
     // Render: set up view
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-
+    glEnable(GL_CULL_FACE);
 
     /// TODO: calculate projection matrix from resolution
     glm::mat4 projection_matrix = glm::perspective(glm::radians(50.0f),
@@ -149,7 +142,6 @@ void GLWidget::paintGL()
 
     _skybox->draw(projection_matrix);
 
-    glEnable(GL_CULL_FACE);
 
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -180,7 +172,8 @@ void GLWidget::paintGL()
         Config::distanceChanged=false;
     }
 
-    _crown->draw(projection_matrix);
+    if(!cameraBelow)
+        _crown->draw(projection_matrix);
 
     _airshower_hd->draw(projection_matrix);
     _airshower_em->draw(projection_matrix);
@@ -250,6 +243,10 @@ void GLWidget::animateGL()
 
     glm::mat4 modelViewMatrix = glm::lookAt(camera+glm::vec3(0.0f,5.0f,0.0f), focus, glm::vec3(0.0, 1.0, 0.0));
 
+    if((camera.y+5)>=0)
+        cameraBelow=false;
+    else
+        cameraBelow=true;
 
     // update drawables
     _airshower_hd->update(timeElapsedMs,modelViewMatrix);
@@ -258,8 +255,8 @@ void GLWidget::animateGL()
     _skybox->update(timeElapsedMs, modelViewMatrix);
     _ground->update(timeElapsedMs, modelViewMatrix);
     _crown->update(timeElapsedMs,modelViewMatrix);
-
     _sfcenter->update(timeElapsedMs,modelViewMatrix);
+
     // update the widget (do not remove this!)
     update();
 }

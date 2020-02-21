@@ -1,10 +1,3 @@
-/*
- * Copyright (C) 2014
- * Computer Graphics Group, University of Siegen
- * Written by Martin Lambers <martin.lambers@uni-siegen.de>
- * All rights reserved.
- */
-
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
@@ -56,6 +49,7 @@ protected:
 
     std::shared_ptr<ShowerFrontCenter> _sfcenter;
 
+    bool cameraBelow;
 
 private slots:
     /**

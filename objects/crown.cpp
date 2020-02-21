@@ -19,69 +19,21 @@
 
 Crown::Crown(std::string name)
 {
-    _levels=3;
+    _levels=Config::crownLevels;
+    _distance=3.0f;
+    _number = 1 + 6*(_levels*(_levels+1))/2;
 }
 
 
 void Crown::init()
 {
-
-    _crownPositions.clear();
-    _detectors.clear();
-
-    _levels=Config::crownLevels;
-
-    _distance=3.0f;
-
-    _crownPositions.push_back(glm::vec3(0.0f));
-    _detectors.push_back(Detector("Detector 0"));
-    _detectors.back().init();
-
-    for (int level=0;level<_levels;level++)
-    {
-
-        int index=0;
-
-        // calculate detector positions on hexagon edges
-        for(float i=0.0f; i< M_PI*2.0f-0.0001; i+=M_PI/3.0f) // need to subtract small amount, because of floating point precision
-        {
-            glm::vec3 position=glm::vec3(sinf(i)*_distance*(level+1),0,cosf(i)*_distance*(level+1));
-            _crownPositions.push_back(position);
-            _detectors.push_back(Detector("Detector "+std::to_string(level*6+index)));
-            _detectors.back().init();
-
-            // calculate detector positions between hexagon edges
-            if(level!=0)
-            {
-                glm::vec3 next_position=glm::vec3(sinf(i+M_PI/3.0f)*_distance*(level+1),0,cosf(i+M_PI/3.0f)*_distance*(level+1));
-                glm::vec3 gapVec= (next_position- position);
-                gapVec=gapVec/float(level+1);
-
-                for(int gap=1; gap<=level; gap++)
-                {
-                    _crownPositions.push_back(gapVec*float(gap)+position);
-                    _detectors.push_back(Detector("Detector "+std::to_string(level*6+index)));
-                    _detectors.back().init();
-
-
-                }
-            }
-
-
-//            std::cout.precision(20);
-//            std::cout<<i<<std::endl;
-            index++;
-
-        }
-        //distance+=distance;
-    }
-
+    createObject();
 }
 
 void Crown::draw(glm::mat4 projection_matrix)
 {
     // call draw for all detectors
-    for(unsigned int i=0;i< _detectors.size();i++)
+    for(unsigned int i=0;i< _number;i++)
     {
         _detectors.at(i).draw(projection_matrix);
     }
@@ -126,9 +78,6 @@ void Crown::setLights(std::shared_ptr<ShowerFrontCenter> front)
 
 void Crown::recreate()
 {
-
-    glFlush();
-
     if(Config::distanceChanged)
     {
         for(int i=0;i<_crownPositions.size();i++)
@@ -138,17 +87,62 @@ void Crown::recreate()
         _distance=Config::detectorDistance;
     }
 
-    if(Config::crownLevelsChanged)
+    if(Config::crownLevelsChanged && Config::crownLevels<11)
     {
-        init();
-        setLights(_showerFront);
+        _levels=Config::crownLevels;
+        _number = 1 + 6*(_levels*(_levels+1))/2;
     }
 
-    for(unsigned int i=0;i< _detectors.size();i++)
+    if(Config::subdivide || Config::changeRadius)
     {
-        _detectors.at(i).recreate();
+        for(int i=0; i<_number; i++)
+        {
+            _detectors.at(i).recreate();
+        }
     }
 }
 
+void Crown::createObject()
+{
+    _crownPositions.clear();
+    _detectors.clear();
+
+    _crownPositions.push_back(glm::vec3(0.0f));
+    _detectors.push_back(Detector("Detector 0"));
+    _detectors.back().init();
+
+    int maxLevels = 10;
+
+    for (int level=0;level<maxLevels;level++)
+    {
+        int index=0;
+
+        // calculate detector positions on hexagon edges
+        for(float i=0.0f; i< M_PI*2.0f-0.0001; i+=M_PI/3.0f) // need to subtract small amount, because of floating point precision
+        {
+            glm::vec3 position=glm::vec3(sinf(i)*_distance*(level+1),0,cosf(i)*_distance*(level+1));
+            _crownPositions.push_back(position);
+            _detectors.push_back(Detector("Detector "+std::to_string(level*6+index)));
+            _detectors.back().init();
+
+            // calculate detector positions between hexagon edges
+            if(level!=0)
+            {
+                glm::vec3 next_position=glm::vec3(sinf(i+M_PI/3.0f)*_distance*(level+1),0,cosf(i+M_PI/3.0f)*_distance*(level+1));
+                glm::vec3 gapVec= (next_position- position);
+                gapVec=gapVec/float(level+1);
+
+                for(int gap=1; gap<=level; gap++)
+                {
+                    _crownPositions.push_back(gapVec*float(gap)+position);
+                    _detectors.push_back(Detector("Detector "+std::to_string(level*6+index)));
+                    _detectors.back().init();
+                }
+            }
+            index++;
+        }
+    }
+
+}
 
 

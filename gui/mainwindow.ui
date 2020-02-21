@@ -221,7 +221,7 @@ background-color: rgb(0, 0, 0);</string>
           <item row="2" column="1">
            <widget class="QSpinBox" name="spinBox_levels">
             <property name="maximum">
-             <number>10</number>
+             <number>23</number>
             </property>
             <property name="value">
              <number>3</number>

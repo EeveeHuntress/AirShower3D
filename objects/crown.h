@@ -37,6 +37,7 @@ protected:
 
     int _levels;
     float _distance;
+    int _number;
 
     std::vector<Detector> _detectors;       // detectors in the crowns
 
@@ -46,7 +47,10 @@ protected:
 
     glm::mat4 _modelViewMatrix; /**< The model view matrix to get the object into model view space */
 
-
+    /**
+     * @see Drawable::createObject()
+     */
+    virtual void createObject();
 
 };
 
