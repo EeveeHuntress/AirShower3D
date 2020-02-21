@@ -141,13 +141,19 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
+
     /// TODO: calculate projection matrix from resolution
     glm::mat4 projection_matrix = glm::perspective(glm::radians(50.0f),
                 783.0f / 691,
                 0.1f, 100.0f);
 
+    _skybox->draw(projection_matrix);
+
+    glEnable(GL_CULL_FACE);
+
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
     // when subdivision value changed, recreate planets
@@ -174,7 +180,6 @@ void GLWidget::paintGL()
         Config::distanceChanged=false;
     }
 
-    _skybox->draw(projection_matrix);
     _crown->draw(projection_matrix);
 
     _airshower_hd->draw(projection_matrix);
@@ -182,10 +187,6 @@ void GLWidget::paintGL()
     _airshower_mu->draw(projection_matrix);
 
     _ground->draw(projection_matrix);
-
-    _sfcenter->draw(projection_matrix);
-
-    glm::vec3 test = _sfcenter->getPosition();
 }
 
 //default values for camera position

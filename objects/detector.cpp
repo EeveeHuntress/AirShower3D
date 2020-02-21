@@ -40,7 +40,7 @@ void Detector::recreate()
     glFlush();
     createObject();
 
-    //_panel.back().recreate();
+    _panel.back().recreate();
 }
 
 
@@ -197,22 +197,22 @@ void Detector::createObject(){
 
         //bottom
         indices.push_back(indexCounter);
-        indices.push_back(indexCounter+2);
         indices.push_back(indexCounter+3);
+        indices.push_back(indexCounter+2);
 
         //face of mantle
         indices.push_back(indexCounter+7);
-        indices.push_back(indexCounter+6);
         indices.push_back(indexCounter+8);
+        indices.push_back(indexCounter+6);
 
         indices.push_back(indexCounter+7);
-        indices.push_back(indexCounter+8);
         indices.push_back(indexCounter+9);
+        indices.push_back(indexCounter+8);
 
         //top
         indices.push_back(indexCounter+1);
-        indices.push_back(indexCounter+5);
         indices.push_back(indexCounter+4);
+        indices.push_back(indexCounter+5);
 
         indexCounter+=10;
 
