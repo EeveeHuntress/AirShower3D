@@ -37,6 +37,7 @@ public:
 
     static bool isPlaying;          /// is the airshower animation playing
     static float pauseTime;         /// time saved when paused
+    static int timeChanged;
 
     static int crownLevels;         /// levels of detector crowns to draw
     static bool crownLevelsChanged; /// checker for updating crown levels

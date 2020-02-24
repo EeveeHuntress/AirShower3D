@@ -150,6 +150,12 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         }
     }
 
+    if(Config::timeChanged>0)
+    {
+        changed = true;
+        Config::timeChanged--;
+    }
+
     if(changed)
         Airshower::recreate();
 

@@ -26,6 +26,7 @@ bool Config::lookatShowerFront=false;   /** toggle for camera to look at shower 
 
 bool Config::isPlaying=true;
 float Config::pauseTime=0.0f;
+int Config::timeChanged=0;
 
 int Config::crownLevels=3;
 bool Config::crownLevelsChanged=false;

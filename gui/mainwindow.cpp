@@ -83,12 +83,14 @@ void MainWindow::playPause()
 
 void MainWindow::setTime(int value)
 {
-    if(Config::isPlaying)
-        Config::isPlaying=false;
+//    if(Config::isPlaying)
+//        Config::isPlaying=false;
 
     float floatTime= value/100.f;
     Config::time=floatTime;
     Config::pauseTime=floatTime;
+
+    Config::timeChanged = 3;
 
     QString title = QString("Zeitpunkt: ") + QString::number(Config::time*Config::maxTime*100000, 'x', 4) + "E-5 sec";
     this->ui->groupBox_time->setTitle(title);

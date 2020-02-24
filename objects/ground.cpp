@@ -29,7 +29,6 @@ Ground::Ground(std::string name, std::string textureLocation): Drawable(name)
 
 void Ground::init()
 {
-
     Drawable::init();
 
     loadFBO();
@@ -92,36 +91,13 @@ void Ground::draw(glm::mat4 projection_matrix) const
 
 void Ground::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
 {
-
-    //take out any unwanted translation from modelview matrix
-    //glm::mat4 view = glm::mat4(glm::mat3(modelViewMatrix));
-
-//    std::stack<glm::mat4> modelview_stack;
-
-//    modelview_stack.push(modelViewMatrix);
-
-//    modelview_stack.top() = glm::translate(modelview_stack.top(), glm::vec3(0,10,0));
-//    modelview_stack.top() = glm::rotate(modelview_stack.top(), glm::radians(90.0f), glm::vec3(1,0,0));
-
-//    modelview_stack.top()=glm::scale(modelview_stack.top(), glm::vec3(10.0f));
-//    _modelViewMatrix = glm::mat4(modelview_stack.top());
-
-
     _modelViewMatrix = modelViewMatrix;
-
-
-
-
 }
 
 void Ground::createObject()
 {
-    ///TODO: your code here
-
-//    std::vector<glm::vec3> positions;
     std::vector<glm::vec2> texCoordOptions;
     std::vector<glm::vec2> texCoords;
-    //std::vector<unsigned int> indices;
     positions.clear();
     indices.clear();
 
@@ -185,9 +161,6 @@ void Ground::createObject()
 
         // check for errors
         VERIFY(CG::checkError());
-
-
-
 }
 
 
