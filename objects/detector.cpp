@@ -101,15 +101,7 @@ void Detector::draw(glm::mat4 projection_matrix) const
 
 void Detector::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
 {
-    std::stack<glm::mat4> modelview_stack;
-
-    modelview_stack.push(modelViewMatrix);
-
-        // rotate around y-axis
-        modelview_stack.top() = glm::rotate(modelview_stack.top(), glm::radians(0.0f), glm::vec3(0,1,0));
-        _modelViewMatrix = glm::mat4(modelview_stack.top());
-
-    modelview_stack.pop();
+    _modelViewMatrix = modelViewMatrix;
 
     _panel.back().update(elapsedTimeMs, _modelViewMatrix);
 }

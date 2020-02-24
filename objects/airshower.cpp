@@ -120,19 +120,25 @@ void Airshower::draw(glm::mat4 projection_matrix) const
 
 void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
 {
+    bool changed = false;
     if(Config::isPlaying)
     {
         Config::time += (/*elapsedTimeMs**/Config::animationSpeed)/100000.0f;
         Config::pauseTime=Config::time;
-    }else
+        changed = true;
+    }
+    else
+    {
         Config::time=Config::pauseTime;
+        changed = false;
+    }
 
     if(Config::loop)
     {
         while(Config::time>1.0f)
         {
             Config::time -= 1.0f;
-
+            changed = true;
         }
     }
     else
@@ -140,11 +146,13 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         if(Config::time>1.0f)
         {
             Config::time = 1.0f;
+            changed=false;
         }
     }
 
+    if(changed)
+        Airshower::recreate();
 
-    Airshower::recreate();
     _modelViewMatrix = modelViewMatrix;
 }
 
