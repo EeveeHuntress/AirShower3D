@@ -289,35 +289,21 @@ void Airshower::readFromFile()
     {
         //converted data
         float xstart,ystart,zstart,tstart, xend,yend,zend,tend, trash;
-        bool first=true;
 
         //write data to attributes
         while(!myfile.atEnd()/* && testCounter<880210*/)
         {
             in >> trash >> trash >> xstart >> ystart >> zstart >> tstart >> xend >> yend >> zend >> tend /*>> trash*/;
 
-            if(first)
-            {
-                first=false;
-                _max = glm::vec3(xstart,zstart,ystart);
-                _min = _max;
-            }
-
             if(_maxTime<tend && _type.compare("em")==0)
                 _maxTime = tend;
 
-	    // thinning:
-	    //
-            // float cutoff = 55000; // "radius" (i.e. square...) in cm
-            // float cutoffz = 1000000; // above ground in cm
-	    //
-	    // in case an additional thinning shall be implemented,
-	    // skip the following code block if the thinning
-	    // condition is fulfilled
+        //find min and max points
 	    if(_min.y>zend)
 	      _min = glm::vec3(xend,zend,yend);
 	    if(_max.y<zstart)
 	      _max = glm::vec3(xstart,zstart,ystart);
+
 	    //create new track
 	    positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
 	    timestamps.push_back(tstart/_maxTime);
