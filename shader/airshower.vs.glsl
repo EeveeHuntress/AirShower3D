@@ -4,7 +4,9 @@ uniform mat4 projection_matrix;
 uniform mat4 modelview_matrix;
 
 uniform vec3 col;
-uniform int alpha;
+
+//uniform float time;
+//uniform float currTime;
 
 // get position from vertex array object
 in vec3 pos;
@@ -12,7 +14,7 @@ in vec3 pos;
 
 // send color to fragment shader
 out vec3 vcolor;
-out int valpha;
+//out float vtime;
 
 void main(void)
 {

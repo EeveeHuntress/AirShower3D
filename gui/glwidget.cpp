@@ -93,31 +93,52 @@ void GLWidget::initializeGL()
     /// TODO: Init all drawables here
     _crown->init();
 
-    //init em airshower first to get minY coord
+    //init mu airshower first
+    _airshower_mu->init();
+    _airshower_hd->init();
     _airshower_em->init();
 
-    _airshower_hd->setMaxTime(_airshower_em->getMaxTime());
-    _airshower_mu->setMaxTime(_airshower_em->getMaxTime());
+    float maxTime = _airshower_em->getMaxTime();
+    if( maxTime < _airshower_mu->getMaxTime() )
+        maxTime = _airshower_mu->getMaxTime();
+    if( maxTime < _airshower_hd->getMaxTime() )
+        maxTime = _airshower_hd->getMaxTime();
 
-    Config::maxTime = _airshower_em->getMaxTime();
+    Config::maxTime = maxTime;
+    _airshower_hd->setMaxTime(Config::maxTime);
+    _airshower_mu->setMaxTime(Config::maxTime);
+    _airshower_em->setMaxTime(Config::maxTime);
 
-    _airshower_hd->init();
-    _airshower_mu->init();
+    std::cout << "Max Time: " << Config::maxTime << std::endl;
 
     _skybox->init();
-
     _ground->init();
 
-    _sfcenter = std::make_shared<ShowerFrontCenter>("ShowerFrontCenter", _airshower_em->getShowerAxis(), glm::vec3(0.0f,(_airshower_em->getMaxY()-_airshower_em->getMinY())/100000,0.0f));
+    float offset = _airshower_em->getMinY();
+    if( offset > _airshower_mu->getMinY() )
+        offset = _airshower_mu->getMinY();
+    if( offset > _airshower_hd->getMinY() )
+        offset = _airshower_hd->getMinY();
 
+    float hight = _airshower_em->getMaxY();
+    if( hight < _airshower_mu->getMaxY() )
+        hight = _airshower_mu->getMaxY();
+    if( hight < _airshower_hd->getMaxY() )
+        hight = _airshower_hd->getMaxY();
+
+    _airshower_em->setOffsetY(offset);
+    _airshower_mu->setOffsetY(offset);
+    _airshower_hd->setOffsetY(offset);
+
+    _sfcenter = std::make_shared<ShowerFrontCenter>("ShowerFrontCenter", _airshower_em->getShowerAxis(), glm::vec3(0.0f,(hight-offset)/100000,0.0f));
     _sfcenter->init();
 
     _ground->setLights(_sfcenter);
     _crown->setLights(_sfcenter);   //also sets light for detectors
 
-    _airshower_em->setOffsetY(_airshower_em->getMinY());
-    _airshower_mu->setOffsetY(_airshower_em->getMinY());
-    _airshower_hd->setOffsetY(_airshower_em->getMinY());
+    _airshower_em->recreate();
+    _airshower_mu->recreate();
+    _airshower_hd->recreate();
 }
 
 void GLWidget::resizeGL(int width, int height)

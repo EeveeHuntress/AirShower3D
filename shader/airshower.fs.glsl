@@ -2,7 +2,7 @@
 
 // get color from vertex shader
 in vec3 vcolor;
-in int valpha;
+//in int vtime;
 
 // send color to screen
 layout(location = 0) out vec4 fcolor;

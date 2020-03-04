@@ -53,7 +53,7 @@ void Airshower::init()
 
 //    Drawable::init();
     Drawable::initShader();
-    createObject();
+    createObject(); //do this later
 }
 
 //get color of shower
@@ -133,6 +133,8 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         changed = false;
     }
 
+    std::cout << "Time: " << Config::time << std::endl;
+
     if(Config::loop)
     {
         while(Config::time>1.0f)
@@ -172,7 +174,7 @@ void Airshower::createObject()
     positionsToShader.clear();
 
     //get current time from Config
-    float testTime = Config::time;
+    float testTime = Config::time*Config::maxTime;
     glm::vec3 offset = glm::vec3(0.0f, _offsetY*_sizeFactor, 0.0f);
 
     for(int i=0; i<positions.size()-1; i+=2)
@@ -295,7 +297,7 @@ void Airshower::readFromFile()
         {
             in >> trash >> trash >> xstart >> ystart >> zstart >> tstart >> xend >> yend >> zend >> tend /*>> trash*/;
 
-            if(_maxTime<tend && _type.compare("em")==0)
+            if(_maxTime<tend)
                 _maxTime = tend;
 
         //find min and max points
@@ -306,14 +308,10 @@ void Airshower::readFromFile()
 
 	    //create new track
 	    positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
-	    timestamps.push_back(tstart/_maxTime);
+        timestamps.push_back(tstart);
 	    positions.push_back(glm::vec3(xend,zend,yend)*_sizeFactor);
-	    timestamps.push_back(tend/_maxTime);
+        timestamps.push_back(tend);
         }
-
-    ///TODO: normalize data
-    /// timestamp should be between 0 and 1
-    /// positions should be visible
 
       myfile.close();
     }
