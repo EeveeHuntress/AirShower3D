@@ -53,7 +53,7 @@ void Airshower::init()
 
 //    Drawable::init();
     Drawable::initShader();
-    createObject(); //do this later
+//    createObject(); //do this later
 }
 
 //get color of shower
@@ -123,7 +123,7 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
     bool changed = false;
     if(Config::isPlaying)
     {
-        Config::time += (/*elapsedTimeMs**/Config::animationSpeed)/100000.0f;
+        Config::time += (/*elapsedTimeMs**/Config::animationSpeed)*Config::maxTime;
         Config::pauseTime=Config::time;
         changed = true;
     }
@@ -132,8 +132,6 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         Config::time=Config::pauseTime;
         changed = false;
     }
-
-    std::cout << "Time: " << Config::time << std::endl;
 
     if(Config::loop)
     {
@@ -156,31 +154,35 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         Airshower::recreate();
 
     _modelViewMatrix = modelViewMatrix;
-}
 
-std::string Airshower::getVertexShader() const
-{
-    return Drawable::loadShaderFile(":/shader/airshower.vs.glsl");
-}
-
-std::string Airshower::getFragmentShader() const
-{
-    return Drawable::loadShaderFile(":/shader/airshower.fs.glsl");
+//    std::cout << "Time: " << Config::time << std::endl;
+//    std::cout << "Max Time: " << Config::maxTime << std::endl;
+//    std::cout << "Pause Time: " << Config::pauseTime << std::endl;
 }
 
 
 void Airshower::createObject()
 {
     positionsToShader.clear();
+    timestampsToShader.clear();
 
     //get current time from Config
-    float testTime = Config::time*Config::maxTime;
+    float testTime = Config::time;
     glm::vec3 offset = glm::vec3(0.0f, _offsetY*_sizeFactor, 0.0f);
+
+    for(int i=0; i<timestamps.size(); i++)
+    {
+        timestampsToShader.push_back(timestamps.at(i)/Config::maxTime);
+    }
+
+
+//    std::cout << "Time: " << timestamps.at(3) << std::endl;
+//    std::cout << "TimeNorm: " << timestampsToShader.at(3) << std::endl;
 
     for(int i=0; i<positions.size()-1; i+=2)
     {
         //tracks that are fully in the timeframe
-        if(timestamps.at(i+1)<=testTime && !Config::onlyShowerFront)
+        if(timestampsToShader.at(i+1)<=testTime && !Config::onlyShowerFront)
         {
             glm::vec3 start = positions.at(i)-offset;
             glm::vec3 end = positions.at(i+1)-offset;
@@ -188,19 +190,14 @@ void Airshower::createObject()
             positionsToShader.push_back(end);
         }
         //linear interpolation of track that is partially in timeframe
-        else if(timestamps.at(i)<testTime && timestamps.at(i+1)>testTime)
+        else if(timestampsToShader.at(i)<testTime && timestampsToShader.at(i+1)>testTime)
         {
 
             glm::vec3 newTrackStart;
-            float lambda = (testTime-timestamps.at(i))/(timestamps.at(i+1)-timestamps.at(i));
+            float lambda = (testTime-timestampsToShader.at(i))/(timestampsToShader.at(i+1)-timestampsToShader.at(i));
 
-//            if(!Config::onlyShowerFront)
-                newTrackStart = positions.at(i);
-//            else
-//                newTrackStart = positions.at(i) + (lambda-0.1f)*(positions.at(i+1)-positions.at(i)) ;
+            newTrackStart = positions.at(i);
 
-            ///TODO factor of linear interpolation missing
-//            float lambda = (testTime-timestamps.at(i))/(timestamps.at(i+1)-timestamps.at(i));
             glm::vec3 newTrackEnd = positions.at(i) + lambda*(positions.at(i+1)-positions.at(i));
 
             if(!Config::onlyShowerFront)
@@ -238,43 +235,43 @@ void Airshower::createObject()
 void Airshower::createTestShower()
 {
     positions.clear();
-    timestamps.clear();
+    timestampsToShader.clear();
 
     //Test Shower
     positions.push_back(glm::vec3(0.0f,15.0f,3.0f));
-    timestamps.push_back(0.0f);
+    timestampsToShader.push_back(0.0f);
     positions.push_back(glm::vec3(0.0f,5.0f,-3.0f));
-    timestamps.push_back(0.19f);
+    timestampsToShader.push_back(0.19f);
 
     positions.push_back(glm::vec3(0.0f,5.0f,-3.0f));
-    timestamps.push_back(0.19f);
+    timestampsToShader.push_back(0.19f);
     positions.push_back(glm::vec3(0.0f,4.0f,-2.9f));
-    timestamps.push_back(0.2f);
+    timestampsToShader.push_back(0.2f);
 
     positions.push_back(glm::vec3(0.0f,4.0f,-2.9f));
-    timestamps.push_back(0.2f);
+    timestampsToShader.push_back(0.2f);
     positions.push_back(glm::vec3(0.0f,2.0f,-2.0f));
-    timestamps.push_back(0.6f);
+    timestampsToShader.push_back(0.6f);
 
     positions.push_back(glm::vec3(0.0f,4.0f,-2.9f));
-    timestamps.push_back(0.2f);
+    timestampsToShader.push_back(0.2f);
     positions.push_back(glm::vec3(1.0f,3.0f,-2.5f));
-    timestamps.push_back(0.4f);
+    timestampsToShader.push_back(0.4f);
 
     positions.push_back(glm::vec3(0.0f,2.0f,-2.0f));
-    timestamps.push_back(0.6f);
+    timestampsToShader.push_back(0.6f);
     positions.push_back(glm::vec3(0.0f,0.0f,-1.0f));
-    timestamps.push_back(1.0f);
+    timestampsToShader.push_back(1.0f);
 
     positions.push_back(glm::vec3(0.0f,2.0f,-2.0f));
-    timestamps.push_back(0.6f);
+    timestampsToShader.push_back(0.6f);
     positions.push_back(glm::vec3(0.0f,0.0f,-2.0f));
-    timestamps.push_back(1.0f);
+    timestampsToShader.push_back(1.0f);
 
     positions.push_back(glm::vec3(1.0f,3.0f,-2.5f));
-    timestamps.push_back(0.4f);
+    timestampsToShader.push_back(0.4f);
     positions.push_back(glm::vec3(2.0f,0.0f,0.0f));
-    timestamps.push_back(1.0f);
+    timestampsToShader.push_back(1.0f);
 
 }
 
@@ -282,6 +279,8 @@ void Airshower::readFromFile()
 {
     positions.clear();
     timestamps.clear();
+
+    bool first = true;
 
     //read file
     QFile myfile(_dataPath.c_str());
@@ -297,20 +296,29 @@ void Airshower::readFromFile()
         {
             in >> trash >> trash >> xstart >> ystart >> zstart >> tstart >> xend >> yend >> zend >> tend /*>> trash*/;
 
+            if(!(first && _type.compare("hd") == 0))
+            {
+
             if(_maxTime<tend)
                 _maxTime = tend;
 
-        //find min and max points
-	    if(_min.y>zend)
-	      _min = glm::vec3(xend,zend,yend);
-	    if(_max.y<zstart)
-	      _max = glm::vec3(xstart,zstart,ystart);
+            //find min and max points
+            if(_min.y>zend)
+              _min = glm::vec3(xend,zend,yend);
+            if(_max.y<zstart)
+              _max = glm::vec3(xstart,zstart,ystart);
 
-	    //create new track
-	    positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
-        timestamps.push_back(tstart);
-	    positions.push_back(glm::vec3(xend,zend,yend)*_sizeFactor);
-        timestamps.push_back(tend);
+            //create new track
+            positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
+            timestamps.push_back(tstart);
+            positions.push_back(glm::vec3(xend,zend,yend)*_sizeFactor);
+            timestamps.push_back(tend);
+            }
+            else
+            {
+                std::cout << "Test" << std::endl;
+                first = false;
+            }
         }
 
       myfile.close();
@@ -323,6 +331,15 @@ void Airshower::readFromFile()
 }
 
 
+std::string Airshower::getVertexShader() const
+{
+    return Drawable::loadShaderFile(":/shader/airshower.vs.glsl");
+}
+
+std::string Airshower::getFragmentShader() const
+{
+    return Drawable::loadShaderFile(":/shader/airshower.fs.glsl");
+}
 
 glm::vec3 Airshower::getShowerAxis()
 {

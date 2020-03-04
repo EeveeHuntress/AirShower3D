@@ -99,17 +99,19 @@ void GLWidget::initializeGL()
     _airshower_em->init();
 
     float maxTime = _airshower_em->getMaxTime();
-    if( maxTime < _airshower_mu->getMaxTime() )
+    std::cout << "Max Time: " << maxTime << std::endl;
+    if( maxTime < _airshower_mu->getMaxTime() ){
         maxTime = _airshower_mu->getMaxTime();
-    if( maxTime < _airshower_hd->getMaxTime() )
+    std::cout << "Max Time: " << maxTime << std::endl;}
+    if( maxTime < _airshower_hd->getMaxTime() ){
         maxTime = _airshower_hd->getMaxTime();
+    std::cout << "Max Time: " << maxTime << std::endl;}
 
     Config::maxTime = maxTime;
     _airshower_hd->setMaxTime(Config::maxTime);
     _airshower_mu->setMaxTime(Config::maxTime);
     _airshower_em->setMaxTime(Config::maxTime);
 
-    std::cout << "Max Time: " << Config::maxTime << std::endl;
 
     _skybox->init();
     _ground->init();
