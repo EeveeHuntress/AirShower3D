@@ -39,6 +39,9 @@ Airshower::Airshower(std::string name, std::string data_path, std::string type, 
     //data is measured in centimeter
     //1.0f here -> 1km
     _sizeFactor=1.0f/100000.0f;
+
+    _timeSteps = 0.00001;
+    steps = 100;
 }
 
 
@@ -150,14 +153,10 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         }
     }
 
-    if(changed)
-        Airshower::recreate();
+//    if(changed)
+//        Airshower::recreate();
 
     _modelViewMatrix = modelViewMatrix;
-
-//    std::cout << "Time: " << Config::time << std::endl;
-//    std::cout << "Max Time: " << Config::maxTime << std::endl;
-//    std::cout << "Pause Time: " << Config::pauseTime << std::endl;
 }
 
 
@@ -167,42 +166,68 @@ void Airshower::createObject()
     timestampsToShader.clear();
 
     //get current time from Config
-    float testTime = Config::time;
     glm::vec3 offset = glm::vec3(0.0f, _offsetY*_sizeFactor, 0.0f);
+    _timeSteps = _maxTime/steps;
 
-    for(int i=0; i<timestamps.size(); i++)
+    //iterate over the tracks
+    for(int ipos=0; ipos<positions.size()-1; ipos+=2)
     {
-        timestampsToShader.push_back(timestamps.at(i)/Config::maxTime);
-    }
+        //calculate the index of the section before the start and end position of the track
+        int startCount = floor(timestamps.at(ipos)/_timeSteps);
+        int endCount = floor(timestamps.at(ipos+1)/_timeSteps);
 
-
-//    std::cout << "Time: " << timestamps.at(3) << std::endl;
-//    std::cout << "TimeNorm: " << timestampsToShader.at(3) << std::endl;
-
-    for(int i=0; i<positions.size()-1; i+=2)
-    {
-        //tracks that are fully in the timeframe
-        if(timestampsToShader.at(i+1)<=testTime && !Config::onlyShowerFront)
+        //track is not devided
+        if(startCount==endCount)
         {
-            glm::vec3 start = positions.at(i)-offset;
-            glm::vec3 end = positions.at(i+1)-offset;
-            positionsToShader.push_back(start);
-            positionsToShader.push_back(end);
+            positionsToShader.push_back(positions.at(ipos)-offset);
+            timestampsToShader.push_back(timestamps.at(ipos));
+            positionsToShader.push_back(positions.at(ipos+1)-offset);
+            timestampsToShader.push_back(timestamps.at(ipos+1));
+            continue;
         }
-        //linear interpolation of track that is partially in timeframe
-        else if(timestampsToShader.at(i)<testTime && timestampsToShader.at(i+1)>testTime)
+
+        //calculate first partitition and push to vector positionsToShader
+        float TestTime=_timeSteps*(startCount+1);
+        float lambda = (TestTime-timestamps.at(ipos))/(timestamps.at(ipos+1)-timestamps.at(ipos));
+        glm::vec3 newTrack = positions.at(ipos) + lambda*(positions.at(ipos+1)-positions.at(ipos));
+
+        positionsToShader.push_back(positions.at(ipos)-offset);
+        timestampsToShader.push_back(timestamps.at(ipos));
+
+        positionsToShader.push_back(newTrack-offset);
+        timestampsToShader.push_back(TestTime);
+
+        //calculate intermediate sections
+        for(int iter=startCount+1; iter<endCount; iter++)
         {
+            float StartTestTime=_timeSteps*(iter);
+            float StartLambda = (StartTestTime-timestamps.at(ipos))/(timestamps.at(ipos+1)-timestamps.at(ipos));
+            glm::vec3 newTrackStart = positions.at(ipos) + StartLambda*(positions.at(ipos+1)-positions.at(ipos));
 
-            glm::vec3 newTrackStart;
-            float lambda = (testTime-timestampsToShader.at(i))/(timestampsToShader.at(i+1)-timestampsToShader.at(i));
+            positionsToShader.push_back(newTrackStart-offset);
+            timestampsToShader.push_back(StartTestTime);
 
-            newTrackStart = positions.at(i);
+            float EndTestTime=_timeSteps*(iter+1);
+            float EndLambda = (EndTestTime-timestamps.at(ipos))/(timestamps.at(ipos+1)-timestamps.at(ipos));
+            glm::vec3 newTrackEnd = positions.at(ipos) + EndLambda*(positions.at(ipos+1)-positions.at(ipos));
 
-            glm::vec3 newTrackEnd = positions.at(i) + lambda*(positions.at(i+1)-positions.at(i));
-
-            if(!Config::onlyShowerFront)
-               positionsToShader.push_back(newTrackStart-offset);
             positionsToShader.push_back(newTrackEnd-offset);
+            timestampsToShader.push_back(EndTestTime);
+
+        }
+
+        //calculate last section if it doesn't end at the end position of the track
+        TestTime = _timeSteps*endCount;
+        if(TestTime < timestamps.at(ipos+1) )
+        {
+            lambda = (TestTime-timestamps.at(ipos))/(timestamps.at(ipos+1)-timestamps.at(ipos));
+            newTrack = positions.at(ipos) + lambda*(positions.at(ipos+1)-positions.at(ipos));
+
+            positionsToShader.push_back(newTrack-offset);
+            timestampsToShader.push_back(TestTime);
+
+            positionsToShader.push_back(positions.at(ipos+1)-offset);
+            timestampsToShader.push_back(timestamps.at(ipos+1));
         }
     }
 
@@ -234,6 +259,10 @@ void Airshower::createObject()
 
 void Airshower::createTestShower()
 {
+    _maxTime=1.0f;
+    _max = glm::vec3(0.0f,15.0f,3.0f);
+    _min = glm::vec3(2.0f,0.0f,0.0f);
+
     positions.clear();
     timestampsToShader.clear();
 
@@ -316,7 +345,7 @@ void Airshower::readFromFile()
             }
             else
             {
-                std::cout << "Test" << std::endl;
+//                std::cout << "Test" << std::endl;
                 first = false;
             }
         }
@@ -375,4 +404,5 @@ void Airshower::setMaxTime(float newTime)
 void Airshower::setOffsetY(float newY)
 {
     _offsetY = newY;
+    recreate();
 }

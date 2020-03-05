@@ -108,6 +108,8 @@ protected:
     std::vector<float> timestamps;
     std::vector<float> timestampsToShader;
 
+    float _timeSteps;
+    int steps;
 
     /**
      * @see Drawable::getVertexShader()
