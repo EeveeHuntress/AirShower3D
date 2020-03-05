@@ -10,8 +10,6 @@ operability:
 
 * Parse README in cli (make it a qrc-file)
 
-* copy default config file 'configfile.in' during install time to install directory
-
 * check for maximum file size (rn 1.5G em-showers chrash at compile time) for user-defined showers: use ifstream instead of GFile here
 
 performance:

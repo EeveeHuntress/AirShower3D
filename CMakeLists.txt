@@ -106,3 +106,4 @@ add_custom_command(TARGET airshower3d POST_BUILD
 #                       ${CMAKE_SOURCE_CIR}/data $<TARGET_FILE_DIR:airshower3d>/data)
 
 install(TARGETS airshower3d RUNTIME DESTINATION bin)
+install(FILES configfile.in DESTINATION bin)
