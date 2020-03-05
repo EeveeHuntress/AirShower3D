@@ -6,6 +6,9 @@
 #include <string>
 #include <vector>
 
+#include <QFile>
+#include <QTextStream>
+
 #include "gui/config.h"
 
 enum eAction

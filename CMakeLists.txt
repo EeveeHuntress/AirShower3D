@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.6)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_INSTALL_PREFIX ${INSTALL})
 cmake_policy(SET CMP0017 NEW)
 cmake_policy(SET CMP0020 NEW)
 
@@ -28,7 +29,7 @@ qt5_wrap_ui(ui_mainwindow.h gui/mainwindow.ui)
 # List your qrc files here #
 # (if you need any)        #
 ############################
-qt5_add_resources (ResourceSources shader.qrc images.qrc data.qrc config.qrc)
+qt5_add_resources (ResourceSources shader.qrc images.qrc data.qrc config.qrc readme.qrc)
 
 # Optional libraries
 find_package(GTA QUIET)
@@ -61,7 +62,6 @@ add_executable(airshower3d
     objects/sfcenter.cpp
     objects/solarpanel.cpp
     #    objects/mountain.cpp
-
 
     shader/detector.vs.glsl
     shader/detector.fs.glsl

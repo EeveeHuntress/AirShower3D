@@ -108,6 +108,17 @@ cli::printBadFile()
 void
 cli::printREADME()
 {
+  QFile readme(":/rdm/README");
+  QTextStream in(&readme);
+
+  if(readme.open(QFile::ReadOnly | QFile::Text))
+  {
+    std::cout << std::endl << "========================= README begin =========================" << std::endl << std::endl;
+    std::cout << in.readAll().toUtf8().constData() << std::endl;
+    std::cout << std::endl << "========================= README end ===========================" << std::endl << std::endl;
+  }
+  else
+    std::cout << "[ERROR]: cli.cpp: Could not open README " << std::endl;
 }
 
 void
