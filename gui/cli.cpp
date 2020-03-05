@@ -48,13 +48,18 @@ cli::evaluateCommandLineArguments()
 {
     switch(argc)
     {
-    case 0 :
-    case 1 :
-	break;
+    case 0:
+    case 1:
+        break;
     case 2 :
-	if(argv[1] == "-h")
+	if(argv[1] == "--help")
 	{
 	    action = action | ePrintREADME;
+	    action = action | eSetStopFlag;
+	}
+	else if(argv[1] == "-h")
+	{
+	    action = action | ePrintUsage;
 	    action = action | eSetStopFlag;
 	}
 	else
@@ -76,6 +81,11 @@ cli::evaluateCommandLineArguments()
 		action = action | eOverrideConfig;
 	    }
 	}
+	else
+	{
+	    action = action | ePrintUsage;
+	    action = action | eSetStopFlag;
+	}   
 	break;
     default:
 	action = action | ePrintUsage;
@@ -86,16 +96,20 @@ cli::evaluateCommandLineArguments()
 void
 cli::printUsage()
 {
-    std::cout << "Usage: airshower3d [OPTION] [configfile]" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Usage: airshower3d [OPTION] [configfile]" << std::endl << std::endl;
     std::cout << "  OPTION may be" << std::endl;
     std::cout << std::endl;
-    std::cout << "  -h" << std::endl;
-    std::cout << "                        shows the instructions from the README file" << std::endl;
     std::cout << "  -c <configfile>" << std::endl;
     std::cout << "                        overrides the default configuration. " << std::endl;
     std::cout << "                        <configfile> should be either the absolute" << std::endl;
     std::cout << "                        or the relative location of the user-defined" << std::endl;
     std::cout << "                        config file" << std::endl;
+    std::cout << "  -h" << std::endl;
+    std::cout << "                        show this message." << std::endl;
+    std::cout << "  --help" << std::endl;
+    std::cout << "                        shows the instructions from the README file" << std::endl;
+    std::cout << std::endl;
 }
 
 void
@@ -108,17 +122,17 @@ cli::printBadFile()
 void
 cli::printREADME()
 {
-  QFile readme(":/rdm/README");
-  QTextStream in(&readme);
+    QFile readme(":/rdm/README");
+    QTextStream in(&readme);
 
-  if(readme.open(QFile::ReadOnly | QFile::Text))
-  {
-    std::cout << std::endl << "========================= README begin =========================" << std::endl << std::endl;
-    std::cout << in.readAll().toUtf8().constData() << std::endl;
-    std::cout << std::endl << "========================= README end ===========================" << std::endl << std::endl;
-  }
-  else
-    std::cout << "[ERROR]: cli.cpp: Could not open README " << std::endl;
+    if(readme.open(QFile::ReadOnly | QFile::Text))
+    {
+        std::cout << std::endl << "========================= README begin =========================" << std::endl << std::endl;
+        std::cout << in.readAll().toUtf8().constData() << std::endl;
+        std::cout << std::endl << "========================= README end ===========================" << std::endl << std::endl;
+    }
+    else
+        std::cout << "[ERROR]: cli.cpp: Could not open README " << std::endl;
 }
 
 void
