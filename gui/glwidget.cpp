@@ -39,10 +39,15 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
 
     cameraBelow=false;
 
-    ConfigFile configfile("configfile.cfg");
-    configfile.readInto<std::string>(Config::pathToAirshowerFiles, "PathToAirshowerFiles");
-    configfile.readInto<float>(Config::showerAxisZenith, "ShowerAxisZenith");
-    configfile.readInto<float>(Config::showerAxisAzimuth, "ShowerAxisAzimuth");
+    ConfigFile configfile;
+
+    if(Config::configFileName != "NONE")
+    {
+      configfile = ConfigFile(Config::configFileName.c_str());
+      configfile.readInto<std::string>(Config::pathToAirshowerFiles, "PathToAirshowerFiles");
+      configfile.readInto<float>(Config::showerAxisZenith, "ShowerAxisZenith");
+      configfile.readInto<float>(Config::showerAxisAzimuth, "ShowerAxisAzimuth");
+    }
 
     // create all drawable elements
     _skybox = std::make_shared<Skybox>("Skybox", ":/res/images/stars.bmp");
@@ -59,9 +64,18 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
     _crown= std::make_shared<Crown>("Crown");
 
     //shower data is divided into three types
-    _airshower_em = std::make_shared<Airshower>("Test_Shower_em", (Config::pathToAirshowerFiles + "track000001.em.txt").c_str(), "em", showerAxis);
-    _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", (Config::pathToAirshowerFiles + "track000001.hd.txt").c_str(), "hd", showerAxis);
-    _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", (Config::pathToAirshowerFiles + "track000001.mu.txt").c_str(), "mu", showerAxis);
+    if(Config::pathToAirshowerFiles == "DEFAULT")
+    {
+      _airshower_em = std::make_shared<Airshower>("Test_Shower_em", ":/dat/data/track000001.em.txt", "em", showerAxis);
+      _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", ":/dat/data/track000001.hd.txt", "hd", showerAxis);
+      _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", ":/dat/data/track000001.mu.txt", "mu", showerAxis);
+    }
+    else
+    {
+      _airshower_em = std::make_shared<Airshower>("Test_Shower_em", (Config::pathToAirshowerFiles + "track000001.em.txt").c_str(), "em", showerAxis);
+      _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", (Config::pathToAirshowerFiles + "track000001.hd.txt").c_str(), "hd", showerAxis);
+      _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", (Config::pathToAirshowerFiles + "track000001.mu.txt").c_str(), "mu", showerAxis);
+    }
 }
 
 void GLWidget::show()

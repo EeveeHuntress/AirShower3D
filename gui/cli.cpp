@@ -92,9 +92,10 @@ cli::printUsage()
     std::cout << "  -h" << std::endl;
     std::cout << "                        shows the instructions from the README file" << std::endl;
     std::cout << "  -c <configfile>" << std::endl;
-    std::cout << "                        overrides the default configfile 'configfile.cfg'. <configfile> should " << std::endl;
-    std::cout << "                        be either the absolute location of the user-defined config file or the " << std::endl;
-    std::cout << "                        relative path with respect to the executable" << std::endl;
+    std::cout << "                        overrides the default configuration. " << std::endl;
+    std::cout << "                        <configfile> should be either the absolute" << std::endl;
+    std::cout << "                        or the relative location of the user-defined" << std::endl;
+    std::cout << "                        config file" << std::endl;
 }
 
 void
@@ -113,6 +114,7 @@ void
 cli::overrideConfig()
 {
     configFile = argv[2];
+    Config::configFileName = configFile;
 }
 
 void

@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "gui/config.h"
+
 enum eAction
 {
     eNoAction       = 0,

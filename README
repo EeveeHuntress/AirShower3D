@@ -49,4 +49,23 @@ repository.
 
 To change the airshower data, just edit the configfile.cfg
 that is created in the same directory as the airshower3d
-executable to fit your needs. 
+executable to fit your needs.
+The variable 'PathToAirshowerFiles' expects a directory in
+which the following files can be found:
+
+  - track000001.em.txt (for electromagnetic shower component)
+  - track000001.hd.txt (for hadronic shower component)
+  - track000001.mu.txt (for muonic shower component)
+
+The expected format is the following (ASCI-encoded, 10 columns):
+
+  particleID energy/GeV x_start/cm y_start/cm z_start/cm tstart/s x_end/cm y_en$
+
+If instead 'PathToAirshowerFiles=DEFAULT' is set, a default
+shower will be shown.
+
+Note, that CORSIKA-thinned showers are currently not supported. The 11th column$
+the thinning-weights) can be removed by hand before feeding the file to AirShow$
+feeding thinned airshowers is not recommended since no unthinning is implemente$
+visualization won't look nice..
+

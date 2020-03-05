@@ -28,7 +28,7 @@ qt5_wrap_ui(ui_mainwindow.h gui/mainwindow.ui)
 # List your qrc files here #
 # (if you need any)        #
 ############################
-qt5_add_resources (ResourceSources shader.qrc images.qrc data.qrc)
+qt5_add_resources (ResourceSources shader.qrc images.qrc data.qrc config.qrc)
 
 # Optional libraries
 find_package(GTA QUIET)
@@ -76,7 +76,7 @@ add_executable(airshower3d
 
 )
 
-configure_file(configfile.cfg.in configfile.cfg)
+configure_file(configfile.in configfile.cfg)
 
 include_directories(${CMAKE_SOURCE_DIR}/glbase ${OPENGL_INCLUDE_DIR})
 
@@ -100,5 +100,9 @@ endif()
 add_custom_command(TARGET airshower3d POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:airshower3d>/images)
+                       
+#add_custom_command(TARGET data POST_BUILD
+#                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+#                       ${CMAKE_SOURCE_CIR}/data $<TARGET_FILE_DIR:airshower3d>/data)
 
 install(TARGETS airshower3d RUNTIME DESTINATION bin)
