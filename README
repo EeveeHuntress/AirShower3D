@@ -48,7 +48,7 @@ Installation (Linux):
  If no install-directory has been given during configuration (step 3), it
  defaults to /usr/local. Once the installation is finished, the exectuable
  'airshower3d' should be located in <install-path>/bin and a exemplary configfile
- 'configfile.in' has been copied to the root of <install-path>.
+ 'configfile.in' has been copied to same directory.
 
 ****
 Run:
