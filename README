@@ -13,11 +13,16 @@
 Prerequisites:
 **************
 
-Required are cmake (>= version 2.8.6), QT5OpenGL 5.4.0
+Required are cmake (>= version 2.8.6), QT5OpenGL 5.4.0, CXX compiler
+ (e.g. g++ 7.4.0)
 
 **************
 Installation (Linux):
 **************
+
+0. install prerequisits e.g. on Ubuntu 18.04:
+
+  sudo apt-get install cmake g++ qt5-default qttools5-dev-tools
 
 1. download the source to e.g. ~/AirShower3D-source
 
