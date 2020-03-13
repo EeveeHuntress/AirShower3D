@@ -162,7 +162,7 @@ void GLWidget::paintGL()
 
     _skybox->draw(projection_matrix);
 
-
+    _ground->draw(projection_matrix);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -198,8 +198,6 @@ void GLWidget::paintGL()
     _airshower_hd->draw(projection_matrix);
     _airshower_em->draw(projection_matrix);
     _airshower_mu->draw(projection_matrix);
-
-    _ground->draw(projection_matrix);
 }
 
 //default values for camera position

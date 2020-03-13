@@ -4,6 +4,7 @@ uniform mat4 projection_matrix;
 uniform mat4 modelview_matrix;
 
 uniform vec3 col;
+uniform float time;
 
 //uniform float time;
 //uniform float currTime;
@@ -15,7 +16,7 @@ in float timestamp;
 
 // send color to fragment shader
 out vec3 vcolor;
-//out float vtime;
+out float valpha;
 
 void main(void)
 {
@@ -24,4 +25,9 @@ void main(void)
 
 //    vcolor= vec3(1.0f,0.0f,0.0f);
     vcolor = col;
+
+    if(time < timestamp)
+        valpha = 0.0f;
+    else
+        valpha = 1.0f;
 }

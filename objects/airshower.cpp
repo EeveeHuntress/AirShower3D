@@ -41,7 +41,7 @@ Airshower::Airshower(std::string name, std::string data_path, std::string type, 
     _sizeFactor=1.0f/100000.0f;
 
     _timeSteps = 0.00001;
-    steps = 100;
+    steps = 1000;
 }
 
 
@@ -155,6 +155,20 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
 
 //    if(changed)
 //        Airshower::recreate();
+
+    //write time to shader
+    glUseProgram(_program);
+    glBindVertexArray(_vertexArrayObject);
+
+    // Enable blending
+    glEnable(GL_BLEND);
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+
+    // set time in shader
+    int timeLocation = glGetUniformLocation(_program, "time");
+    glUniform1f(timeLocation, Config::time);
+
+    glBindVertexArray(0);
 
     _modelViewMatrix = modelViewMatrix;
 }
