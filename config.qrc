@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/con">
+	<file>configfile.in</file>
+    </qresource>
+</RCC>

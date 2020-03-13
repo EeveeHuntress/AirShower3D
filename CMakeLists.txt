@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.6)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_INSTALL_PREFIX ${INSTALL})
 cmake_policy(SET CMP0017 NEW)
 cmake_policy(SET CMP0020 NEW)
 
@@ -28,7 +29,7 @@ qt5_wrap_ui(ui_mainwindow.h gui/mainwindow.ui)
 # List your qrc files here #
 # (if you need any)        #
 ############################
-qt5_add_resources (ResourceSources shader.qrc images.qrc data.qrc)
+qt5_add_resources (ResourceSources shader.qrc images.qrc data.qrc config.qrc readme.qrc)
 
 # Optional libraries
 find_package(GTA QUIET)
@@ -62,7 +63,6 @@ add_executable(airshower3d
     objects/solarpanel.cpp
     #    objects/mountain.cpp
 
-
     shader/detector.vs.glsl
     shader/detector.fs.glsl
     shader/skybox.vs.glsl
@@ -76,7 +76,7 @@ add_executable(airshower3d
 
 )
 
-configure_file(configfile.cfg.in configfile.cfg)
+configure_file(configfile.in configfile.cfg)
 
 include_directories(${CMAKE_SOURCE_DIR}/glbase ${OPENGL_INCLUDE_DIR})
 
@@ -100,5 +100,10 @@ endif()
 add_custom_command(TARGET airshower3d POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/images $<TARGET_FILE_DIR:airshower3d>/images)
+                       
+#add_custom_command(TARGET data POST_BUILD
+#                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+#                       ${CMAKE_SOURCE_CIR}/data $<TARGET_FILE_DIR:airshower3d>/data)
 
 install(TARGETS airshower3d RUNTIME DESTINATION bin)
+install(FILES configfile.in DESTINATION bin)

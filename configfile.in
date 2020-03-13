@@ -1,7 +1,7 @@
 
 # Path to airshower data files
-#  (read details in /data/INFO)
-PathToAirshowerFiles=../AirShower3D/data/
+#  (read details in Airshower3D/README)
+PathToAirshowerFiles=DEFAULT
 
 # Simulated zenith angle of primary particle / deg
 ShowerAxisZenith=30.f
