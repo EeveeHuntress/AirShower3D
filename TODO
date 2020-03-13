@@ -14,12 +14,11 @@ operability:
 
 performance:
 
-* runtime optimization: calculate VAO once with fixed time steps and give to GPU instead
-  of calculating VAO anew for every step (too much CPU!)
-
 * read directly from CORSIKA binary instead of acsi table (or at least include binary2asci converter to repo)
 
 features:
+
+* translate GUI to English
 
 * shadows
 
