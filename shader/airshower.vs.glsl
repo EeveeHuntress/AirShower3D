@@ -10,6 +10,7 @@ uniform vec3 col;
 
 // get position from vertex array object
 in vec3 pos;
+in float timestamp;
 
 
 // send color to fragment shader

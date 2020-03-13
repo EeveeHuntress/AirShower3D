@@ -180,9 +180,9 @@ void Airshower::createObject()
         if(startCount==endCount)
         {
             positionsToShader.push_back(positions.at(ipos)-offset);
-            timestampsToShader.push_back(timestamps.at(ipos));
+            timestampsToShader.push_back(timestamps.at(ipos)/_maxTime);
             positionsToShader.push_back(positions.at(ipos+1)-offset);
-            timestampsToShader.push_back(timestamps.at(ipos+1));
+            timestampsToShader.push_back(timestamps.at(ipos+1)/_maxTime);
             continue;
         }
 
@@ -192,10 +192,10 @@ void Airshower::createObject()
         glm::vec3 newTrack = positions.at(ipos) + lambda*(positions.at(ipos+1)-positions.at(ipos));
 
         positionsToShader.push_back(positions.at(ipos)-offset);
-        timestampsToShader.push_back(timestamps.at(ipos));
+        timestampsToShader.push_back(timestamps.at(ipos)/_maxTime);
 
         positionsToShader.push_back(newTrack-offset);
-        timestampsToShader.push_back(TestTime);
+        timestampsToShader.push_back(TestTime/_maxTime);
 
         //calculate intermediate sections
         for(int iter=startCount+1; iter<endCount; iter++)
@@ -205,14 +205,14 @@ void Airshower::createObject()
             glm::vec3 newTrackStart = positions.at(ipos) + StartLambda*(positions.at(ipos+1)-positions.at(ipos));
 
             positionsToShader.push_back(newTrackStart-offset);
-            timestampsToShader.push_back(StartTestTime);
+            timestampsToShader.push_back(StartTestTime/_maxTime);
 
             float EndTestTime=_timeSteps*(iter+1);
             float EndLambda = (EndTestTime-timestamps.at(ipos))/(timestamps.at(ipos+1)-timestamps.at(ipos));
             glm::vec3 newTrackEnd = positions.at(ipos) + EndLambda*(positions.at(ipos+1)-positions.at(ipos));
 
             positionsToShader.push_back(newTrackEnd-offset);
-            timestampsToShader.push_back(EndTestTime);
+            timestampsToShader.push_back(EndTestTime/_maxTime);
 
         }
 
@@ -224,10 +224,10 @@ void Airshower::createObject()
             newTrack = positions.at(ipos) + lambda*(positions.at(ipos+1)-positions.at(ipos));
 
             positionsToShader.push_back(newTrack-offset);
-            timestampsToShader.push_back(TestTime);
+            timestampsToShader.push_back(TestTime/_maxTime);
 
             positionsToShader.push_back(positions.at(ipos+1)-offset);
-            timestampsToShader.push_back(timestamps.at(ipos+1));
+            timestampsToShader.push_back(timestamps.at(ipos+1)/_maxTime);
         }
     }
 
@@ -247,10 +247,18 @@ void Airshower::createObject()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
 
+    GLuint timestamp_buffer;
+    glGenBuffers(1, &timestamp_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, timestamp_buffer);
+    glBufferData(GL_ARRAY_BUFFER, timestampsToShader.size() * sizeof(float), timestampsToShader.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(1);
+
     // unbind vertex array object
     glBindVertexArray(0);
     // delete buffers (the data is stored in the vertex array object)
     glDeleteBuffers(1, &position_buffer);
+    glDeleteBuffers(1, &timestamp_buffer);
 
     // check for errors
     VERIFY(CG::checkError());
