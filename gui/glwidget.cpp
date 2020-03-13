@@ -176,15 +176,6 @@ void GLWidget::paintGL()
         Config::changeRadius=false;
     }
 
-    if(Config::changedAirshower)
-    {
-        _airshower_em->recreate();
-        _airshower_hd->recreate();
-        _airshower_mu->recreate();
-
-        Config::changedAirshower=false;
-    }
-
     if(Config::crownLevelsChanged|| Config::distanceChanged)
     {
         _crown->recreate();
@@ -195,9 +186,14 @@ void GLWidget::paintGL()
     if(!cameraBelow)
         _crown->draw(projection_matrix);
 
+    glEnable(GL_BLEND);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_DEPTH_TEST);
+
     _airshower_hd->draw(projection_matrix);
-    _airshower_em->draw(projection_matrix);
     _airshower_mu->draw(projection_matrix);
+    _airshower_em->draw(projection_matrix);
 }
 
 //default values for camera position

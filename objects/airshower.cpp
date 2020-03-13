@@ -41,7 +41,7 @@ Airshower::Airshower(std::string name, std::string data_path, std::string type, 
     _sizeFactor=1.0f/100000.0f;
 
     _timeSteps = 0.00001;
-    steps = 1000;
+    steps = 2000;
 }
 
 
@@ -107,11 +107,14 @@ void Airshower::draw(glm::mat4 projection_matrix) const
     int colLocation = glGetUniformLocation(_program, "col");
     glUniform3fv(colLocation, 1 ,glm::value_ptr(_color));
 
+    int stepLocation = glGetUniformLocation(_program, "stepLength");
+    glUniform1f(stepLocation, 1.0f/float(steps));
+
     // call draw
-    if(!Config::onlyShowerFront)
+//    if(!Config::onlyShowerFront)
      glDrawArrays(GL_LINES,0,positionsToShader.size());
-    else
-     glDrawArrays(GL_POINTS,0,positionsToShader.size());
+//    else
+//     glDrawArrays(GL_POINTS,0,positionsToShader.size());
 
 
     // unbin vertex array object
@@ -161,12 +164,22 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
     glBindVertexArray(_vertexArrayObject);
 
     // Enable blending
-    glEnable(GL_BLEND);
-    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+//    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+//    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+//    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
     // set time in shader
     int timeLocation = glGetUniformLocation(_program, "time");
     glUniform1f(timeLocation, Config::time);
+
+
+    // toogle showerFront in shader
+    int boolLocation = glGetUniformLocation(_program, "onlyFront");
+    float showerFront=0.0f;
+    if(Config::onlyShowerFront)
+        showerFront = 1.0f;
+    glUniform1f(boolLocation, showerFront );
 
     glBindVertexArray(0);
 

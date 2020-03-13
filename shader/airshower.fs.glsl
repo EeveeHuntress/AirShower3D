@@ -10,5 +10,5 @@ layout(location = 0) out vec4 fcolor;
 void main(void)
 {
     // set fragment color
-    fcolor = vec4(/*normalize*/(vcolor), valpha);
+    fcolor = vec4(normalize(vcolor), valpha);
 }
