@@ -1,40 +1,59 @@
-### AirShower3D ###
-Project started: 14.11.2019
-
-authors: Evelyn Krause, Onur Fatih Hokkaoemeroglu, Philip Ruehl
-date: 02.02.2020
-
-###################
+############ AirShower3D ################
+#  Project started: 14.11.2019          #
+#                                       #
+#  authors: Evelyn Krause,              #
+#           Onur Fatih Hokkaoemeroglu,  #
+#           Philip Ruehl                #
+#                                       #
+#  date: 02.02.2020                     #
+#                                       #
+#########################################
 
 **************
 Prerequisites:
 **************
 
-Required are cmake (>= version 2.8.6), QT5OpenGL 5.4.0
+Required are cmake (>= version 2.8.6), QT5OpenGL 5.4.0, CXX compiler
+ (e.g. g++ 7.4.0)
 
 **************
-Build (Linux):
+Installation (Linux):
 **************
 
-1. download the source to e.g. /home/me/AirShower3D
+0. install prerequisits e.g. on Ubuntu 18.04:
 
-2. create and enter a build directory 
+  sudo apt-get install cmake g++ qt5-default qttools5-dev-tools
 
-  mkdir /home/me/AirShower3D-buid
-  cd /home/me/AirShower3D-build
+1. download the source to e.g. ~/AirShower3D-source
 
-3. configure the build with cmake by providing the root
- path of the source (should contain a CMakeLists.txt)
+2. create and enter a build directory:
 
- cmake ../Airshower
+  mkdir ~/AirShower3D-buid
+  cd ~/AirShower3D-build
 
-4. Install...
+3. configure the build with cmake by providing the root path of the source
+ (should contain a CMakeLists.txt). If you want to have the installation
+ separated from the build directory, you can provide an optional
+ install-directory which will be created upon installation (e.g.
+ -DINSTALL=../Airshower-install):
 
-  make [-j <N>]
+  cmake [ -DINSTALL=<install-path> ] ../Airshower-source
 
- where <N> is the number of threads you want make to
- use in parallel (might speed things up a bit, though
- the expression in parenthesis is optional).
+4. Build the project. Optionally, you can specify the number of threads <N> that
+ shall be used for the build (can be something like the avaliable number of CPU
+ cores):
+
+  make [ -j <N> ]
+
+5. Install the compiled project into the specified install-directory by calling
+ the install target:
+
+  make install
+
+ If no install-directory has been given during configuration (step 3), it
+ defaults to /usr/local. Once the installation is finished, the exectuable
+ 'airshower3d' should be located in <install-path>/bin and a exemplary configfile
+ 'configfile.in' has been copied to same directory.
 
 ****
 Run:
@@ -42,11 +61,28 @@ Run:
 
 Just execute the binary (with the example path from above):
 
- /home/me/Airshower-build/airshower3d
+ <install-path>/airshower3d
 
-to display the default airshower included in this
-repository.
+to display the default airshower included in this repository.
 
-To change the airshower data, just edit the configfile.cfg
-that is created in the same directory as the airshower3d
-executable to fit your needs. 
+To change the airshower data, just edit the configfile.in that is created in the
+same directory as the airshower3d executable to fit your needs. The variable
+'PathToAirshowerFiles' expects a directory in which the following files can be
+found:
+
+  - track000001.em.txt (for electromagnetic shower component)
+  - track000001.hd.txt (for hadronic shower component)
+  - track000001.mu.txt (for muonic shower component)
+
+The expected format is the following (ASCI-encoded, 10 columns):
+
+  particleID energy/GeV x_start/cm y_start/cm z_start/cm tstart/s x_end/cm y_end/cm z_end/cm t_end/cm
+
+If instead 'PathToAirshowerFiles=DEFAULT' is set, a default shower will be shown.
+
+Note, that CORSIKA-thinned showers are currently not supported. The 11th column
+of a thinned shower (the thinning-weights) can be removed by hand before feeding
+the file to airshower3d. However, feeding thinned airshowers is not recommended
+since no unthinning is implemented so far and thus a visualization of a thinned
+airshower won't look nice..
+

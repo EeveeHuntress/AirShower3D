@@ -4,21 +4,21 @@ bugfixes:
 
 * make path for airshower data in config file indepentent of folder name
 
+* detectors: new crown does not use changed values (f.e. radius)
+
 operability:
 
-* take airshower data out of qrc -> user defined path to shower files
-  - check afterwards again for maximum file size (rn 1.5G em-showers chrash at compile time)
+* Parse README in cli (make it a qrc-file)
 
-* path to airshower data, shower axis and primary type to config file 
+* check for maximum file size (rn 1.5G em-showers chrash at compile time) for user-defined showers: use ifstream instead of GFile here
 
 performance:
-
-* runtime optimization: calculate VAO once with fixed time steps and give to GPU instead
-  of calculating VAO anew for every step (too much CPU!)
 
 * read directly from CORSIKA binary instead of acsi table (or at least include binary2asci converter to repo)
 
 features:
+
+* translate GUI to English
 
 * shadows
 

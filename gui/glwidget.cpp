@@ -39,10 +39,15 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
 
     cameraBelow=false;
 
-    ConfigFile configfile("configfile.cfg");
-    configfile.readInto<std::string>(Config::pathToAirshowerFiles, "PathToAirshowerFiles");
-    configfile.readInto<float>(Config::showerAxisZenith, "ShowerAxisZenith");
-    configfile.readInto<float>(Config::showerAxisAzimuth, "ShowerAxisAzimuth");
+    ConfigFile configfile;
+
+    if(Config::configFileName != "NONE")
+    {
+      configfile = ConfigFile(Config::configFileName.c_str());
+      configfile.readInto<std::string>(Config::pathToAirshowerFiles, "PathToAirshowerFiles");
+      configfile.readInto<float>(Config::showerAxisZenith, "ShowerAxisZenith");
+      configfile.readInto<float>(Config::showerAxisAzimuth, "ShowerAxisAzimuth");
+    }
 
     // create all drawable elements
     _skybox = std::make_shared<Skybox>("Skybox", ":/res/images/stars.bmp");
@@ -59,9 +64,18 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
     _crown= std::make_shared<Crown>("Crown");
 
     //shower data is divided into three types
-    _airshower_em = std::make_shared<Airshower>("Test_Shower_em", (Config::pathToAirshowerFiles + "track000001.em.txt").c_str(), "em", showerAxis);
-    _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", (Config::pathToAirshowerFiles + "track000001.hd.txt").c_str(), "hd", showerAxis);
-    _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", (Config::pathToAirshowerFiles + "track000001.mu.txt").c_str(), "mu", showerAxis);
+    if(Config::pathToAirshowerFiles == "DEFAULT")
+    {
+      _airshower_em = std::make_shared<Airshower>("Test_Shower_em", ":/dat/data/track000001.em.txt", "em", showerAxis);
+      _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", ":/dat/data/track000001.hd.txt", "hd", showerAxis);
+      _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", ":/dat/data/track000001.mu.txt", "mu", showerAxis);
+    }
+    else
+    {
+      _airshower_em = std::make_shared<Airshower>("Test_Shower_em", (Config::pathToAirshowerFiles + "track000001.em.txt").c_str(), "em", showerAxis);
+      _airshower_hd = std::make_shared<Airshower>("Test_Shower_hd", (Config::pathToAirshowerFiles + "track000001.hd.txt").c_str(), "hd", showerAxis);
+      _airshower_mu = std::make_shared<Airshower>("Test_Shower_mu", (Config::pathToAirshowerFiles + "track000001.mu.txt").c_str(), "mu", showerAxis);
+    }
 }
 
 void GLWidget::show()
@@ -93,31 +107,51 @@ void GLWidget::initializeGL()
     /// TODO: Init all drawables here
     _crown->init();
 
-    //init em airshower first to get minY coord
+    //init mu airshower first
+    _airshower_mu->init();
+    _airshower_hd->init();
     _airshower_em->init();
 
-    _airshower_hd->setMaxTime(_airshower_em->getMaxTime());
-    _airshower_mu->setMaxTime(_airshower_em->getMaxTime());
+    float maxTime = _airshower_em->getMaxTime();
+    if( maxTime < _airshower_mu->getMaxTime() )
+        maxTime = _airshower_mu->getMaxTime();
+    if( maxTime < _airshower_hd->getMaxTime() )
+        maxTime = _airshower_hd->getMaxTime();
 
-    Config::maxTime = _airshower_em->getMaxTime();
+    Config::maxTime = maxTime;
+    _airshower_hd->setMaxTime(Config::maxTime);
+    _airshower_mu->setMaxTime(Config::maxTime);
+    _airshower_em->setMaxTime(Config::maxTime);
 
-    _airshower_hd->init();
-    _airshower_mu->init();
 
     _skybox->init();
-
     _ground->init();
 
-    _sfcenter = std::make_shared<ShowerFrontCenter>("ShowerFrontCenter", _airshower_em->getShowerAxis(), glm::vec3(0.0f,(_airshower_em->getMaxY()-_airshower_em->getMinY())/100000,0.0f));
+    float offset = _airshower_em->getMinY();
+    if( offset > _airshower_mu->getMinY() )
+        offset = _airshower_mu->getMinY();
+    if( offset > _airshower_hd->getMinY() )
+        offset = _airshower_hd->getMinY();
 
+    float hight = _airshower_em->getMaxY();
+    if( hight < _airshower_mu->getMaxY() )
+        hight = _airshower_mu->getMaxY();
+    if( hight < _airshower_hd->getMaxY() )
+        hight = _airshower_hd->getMaxY();
+
+    _airshower_em->setOffsetY(offset);
+    _airshower_mu->setOffsetY(offset);
+    _airshower_hd->setOffsetY(offset);
+
+    _sfcenter = std::make_shared<ShowerFrontCenter>("ShowerFrontCenter", _airshower_em->getShowerAxis(), glm::vec3(0.0f,(hight-offset)/100000,0.0f));
     _sfcenter->init();
 
     _ground->setLights(_sfcenter);
     _crown->setLights(_sfcenter);   //also sets light for detectors
 
-    _airshower_em->setOffsetY(_airshower_em->getMinY());
-    _airshower_mu->setOffsetY(_airshower_em->getMinY());
-    _airshower_hd->setOffsetY(_airshower_em->getMinY());
+    _airshower_em->recreate();
+    _airshower_mu->recreate();
+    _airshower_hd->recreate();
 }
 
 void GLWidget::resizeGL(int width, int height)
@@ -142,7 +176,7 @@ void GLWidget::paintGL()
 
     _skybox->draw(projection_matrix);
 
-
+    _ground->draw(projection_matrix);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -156,15 +190,6 @@ void GLWidget::paintGL()
         Config::changeRadius=false;
     }
 
-    if(Config::changedAirshower)
-    {
-        _airshower_em->recreate();
-        _airshower_hd->recreate();
-        _airshower_mu->recreate();
-
-        Config::changedAirshower=false;
-    }
-
     if(Config::crownLevelsChanged|| Config::distanceChanged)
     {
         _crown->recreate();
@@ -175,11 +200,14 @@ void GLWidget::paintGL()
     if(!cameraBelow)
         _crown->draw(projection_matrix);
 
-    _airshower_hd->draw(projection_matrix);
-    _airshower_em->draw(projection_matrix);
-    _airshower_mu->draw(projection_matrix);
+    glEnable(GL_BLEND);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_DEPTH_TEST);
 
-    _ground->draw(projection_matrix);
+    _airshower_hd->draw(projection_matrix);
+    _airshower_mu->draw(projection_matrix);
+    _airshower_em->draw(projection_matrix);
 }
 
 //default values for camera position

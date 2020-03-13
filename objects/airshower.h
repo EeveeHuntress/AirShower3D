@@ -106,7 +106,10 @@ protected:
     std::vector<glm::vec3> positionsToShader;
 
     std::vector<float> timestamps;
+    std::vector<float> timestampsToShader;
 
+    float _timeSteps;
+    int steps;
 
     /**
      * @see Drawable::getVertexShader()
