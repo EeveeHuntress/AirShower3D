@@ -169,9 +169,12 @@ void GLWidget::paintGL()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    /// TODO: calculate projection matrix from resolution
+    GLint m_viewport[4];
+    glGetIntegerv( GL_VIEWPORT, m_viewport );
+
+    // calculate projection matrix from resolution
     glm::mat4 projection_matrix = glm::perspective(glm::radians(50.0f),
-                783.0f / 691,
+                float(m_viewport[2])/m_viewport[3],
                 0.1f, 100.0f);
 
     _skybox->draw(projection_matrix);

@@ -1,7 +1,5 @@
 bugfixes:
 
-* scale resolution according to window size
-
 * make path for airshower data in config file indepentent of folder name
 
 * detectors: new crown does not use changed values (f.e. radius)
