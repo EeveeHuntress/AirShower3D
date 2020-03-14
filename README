@@ -66,9 +66,12 @@ Just execute the binary (with the example path from above):
 to display the default airshower included in this repository.
 
 To change the airshower data, just edit the configfile.in that is created in the
-same directory as the airshower3d executable to fit your needs. The variable
-'PathToAirshowerFiles' expects a directory in which the following files can be
-found:
+same directory as the airshower3d executable to fit your needs and run it with
+
+ <install-path>/airshower3d -c <path-to>/configfile.in
+
+The variable 'PathToAirshowerFiles' in configfile.in expects a directory in which 
+the following files can be found:
 
   - track000001.em.txt (for electromagnetic shower component)
   - track000001.hd.txt (for hadronic shower component)
