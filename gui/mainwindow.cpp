@@ -90,7 +90,7 @@ void MainWindow::setTime(int value)
     Config::time=floatTime;
     Config::pauseTime=floatTime;
 
-    QString title = QString("Zeitpunkt: ") + QString::number(Config::time*Config::maxTime*100000, 'x', 4) + "E-5 sec";
+    QString title = QString("Elapsed time: ") + QString::number(Config::time*Config::maxTime*100000, 'x', 4) + "E-5 sec";
     this->ui->groupBox_time->setTitle(title);
 
 }
