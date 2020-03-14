@@ -4,6 +4,20 @@ bugfixes:
 
 * detectors: new crown does not use changed values (f.e. radius)
 
+* Airshower is always in front of all other objects (this was necessary 
+  since the Shower is completely calculated on the gpu using transparency for
+  tracks in the future. Thus depth testing has been disabled for the shower to
+  prevent it from covering itself).
+    Idea for fix: 
+      * Rewrite airshower-object such, that it stores a container of individual track-objects.
+      * The three different shower components should also be merged into one object
+        and the information about the component should be a member of the track-object. 
+      * Those track-objects can be sorted by their time e.g. with a std::map.
+      * Re-enabling depth testing and always drawing early tracks first should make sure
+        that late (i.e. transparent) tracks do never cover early (i.e. opaque) tracks.
+      * Now, make sure that the whole shower is drawn last so that the transparent tracks
+        are represented correcly
+
 operability:
 
 * Parse README in cli (make it a qrc-file)
