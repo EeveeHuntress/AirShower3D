@@ -41,8 +41,3 @@ features:
 * as soon as primary type can be read from the config: add extra line for primary particle starting at a fixed distance away fromthe first interaction
 
 * Show relative time conversion factor in gui (next to "Animation: 1.0x")
-
-* User should be able to customize the location of the config using a command line input like 
-
-    airshower3d -c <path-to>/configfile.cfg
-
