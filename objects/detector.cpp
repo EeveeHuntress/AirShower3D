@@ -21,7 +21,7 @@ Detector::Detector(std::string name):
     Drawable(name),
     _radius(Config::radius)
 {
-    Config::subdivCount=48;
+    Config::subdivCount=18;
 }
 
 
@@ -123,6 +123,7 @@ void Detector::createObject(){
     float radius = Config::radius;
 
     float hight = 1.2/1.8 * radius;
+    float addedHight = hight/4.0f;
     const int Nphis = subdivs;
 
     unsigned int indexCounter=0;
@@ -132,6 +133,9 @@ void Detector::createObject(){
 
     for(int iphi = 0; iphi < Nphis; iphi++)
     {
+        int mod6 = iphi%6;
+        bool slope = mod6>4 || mod6<3;
+
         float phi1 = iphi * (2* M_PI)/Nphis ; //left
         float phi2 = (iphi+1.) * (2* M_PI)/Nphis ; //right
 
@@ -151,11 +155,12 @@ void Detector::createObject(){
         float y4 = radius * sin(phi2);
         float z4 = hight;
 
-        //middle of top
+        //middle of bottom
         positions.push_back(glm::vec3(0.0f,0.0f,0.0f)*rotx); //0+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,-1,0)));
-        //middle of bottom
-        positions.push_back(glm::vec3(0.0f,0.0f,hight)*rotx);//1+indexCounter
+        //middle of top
+        positions.push_back(glm::vec3(0.0f,0.0f,hight+addedHight)*rotx);//1+indexCounter
+        ///TODO: for slope the normal has to be calculated
         normals.push_back(glm::normalize(glm::vec3(0,1,0)));
 
         //bottom left for floor
@@ -164,12 +169,25 @@ void Detector::createObject(){
         //bottom right for floor
         positions.push_back(glm::vec3(x2,y2,z2)*rotx);//3+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,-1,0)));
-        //top left for ceiling
-        positions.push_back(glm::vec3(x3,y3,z3)*rotx);//4+indexCounter
-        normals.push_back(glm::normalize(glm::vec3(0,1,0)));
-        //top right for ceiling
-        positions.push_back(glm::vec3(x4,y4,z4)*rotx);//5+indexCounter
-        normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+
+        if(slope)
+        {
+            //top left for ceiling
+            positions.push_back(glm::vec3(x3,y3,z3)*rotx);//4+indexCounter
+            normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+            //top right for ceiling
+            positions.push_back(glm::vec3(x4,y4,z4)*rotx);//5+indexCounter
+            normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+        }
+        else
+        {
+            //top left for ceiling
+            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx);//4+indexCounter
+            normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+            //top right for ceiling
+            positions.push_back(glm::vec3(x4,y4,z4+addedHight)*rotx);//5+indexCounter
+            normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+        }
 
         //bottom left for mantle
         positions.push_back(glm::vec3(x1,y1,z1)*rotx);//6+indexCounter
@@ -177,12 +195,25 @@ void Detector::createObject(){
         //bottom right for mantle
         positions.push_back(glm::vec3(x2,y2,z2)*rotx);//7+indexCounter
         normals.push_back(glm::normalize(positions.at(indexCounter+7)));
-        //top left for mantle
-        positions.push_back(glm::vec3(x3,y3,z3)*rotx);//8+indexCounter
-        normals.push_back(glm::normalize(positions.at(indexCounter+8)));
-        //top right for mantle
-        positions.push_back(glm::vec3(x4,y4,z4)*rotx);//9+indexCounter
-        normals.push_back(glm::normalize(positions.at(indexCounter+9)));
+
+        if(slope)
+        {
+            //top left for mantle
+            positions.push_back(glm::vec3(x3,y3,z3)*rotx);//8+indexCounter
+            normals.push_back(glm::normalize(positions.at(indexCounter+8)));
+            //top right for mantle
+            positions.push_back(glm::vec3(x4,y4,z4)*rotx);//9+indexCounter
+            normals.push_back(glm::normalize(positions.at(indexCounter+9)));
+        }
+        else
+        {
+            //top left for mantle
+            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx);//8+indexCounter
+            normals.push_back(glm::normalize(positions.at(indexCounter+8)));
+            //top right for mantle
+            positions.push_back(glm::vec3(x4,y4,z4+addedHight)*rotx);//9+indexCounter
+            normals.push_back(glm::normalize(positions.at(indexCounter+9)));
+        }
 
 
         //bottom
@@ -203,6 +234,49 @@ void Detector::createObject(){
         indices.push_back(indexCounter+1);
         indices.push_back(indexCounter+4);
         indices.push_back(indexCounter+5);
+
+        //walls by slope
+        if(mod6==3 || mod6==5)
+        {
+            glm::vec3 test = glm::vec3(0.0f,2.0f,0.0f);
+
+            positions.push_back(glm::vec3(0.0f,0.0f,hight+addedHight)*rotx);//10+indexCounter
+            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx);//11+indexCounter
+            positions.push_back(glm::vec3(x3,y3,z3)*rotx);//12+indexCounter
+
+
+            if(mod6==5)
+            {
+                glm::vec3 right = glm::cross(glm::vec3(0.0f,1.0f,0.0f),glm::vec3(x1,y1,z1)*rotx);
+                normals.push_back(glm::normalize(right));
+                normals.push_back(glm::normalize(right));
+                normals.push_back(glm::normalize(right));
+            }
+            else
+            {
+                glm::vec3 left = glm::cross(glm::vec3(x1,y1,z1)*rotx, glm::vec3(0.0f,1.0f,0.0f));
+                normals.push_back(glm::normalize(left));
+                normals.push_back(glm::normalize(left));
+                normals.push_back(glm::normalize(left));
+            }
+
+
+            if(mod6==5)
+            {
+                indices.push_back(indexCounter+10);
+                indices.push_back(indexCounter+11);
+                indices.push_back(indexCounter+12);
+            }
+            else
+            {
+                indices.push_back(indexCounter+10);
+                indices.push_back(indexCounter+12);
+                indices.push_back(indexCounter+11);
+            }
+
+
+            indexCounter+=3;
+        }
 
         indexCounter+=10;
 
