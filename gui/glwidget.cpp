@@ -186,10 +186,9 @@ void GLWidget::paintGL()
 
 
     // when subdivision value changed, recreate planets
-    if(Config::subdivide || Config::changeRadius)
+    if(Config::changeRadius)
     {
         _crown->recreate();
-        Config::subdivide=false;
         Config::changeRadius=false;
     }
 

@@ -38,7 +38,6 @@ private slots:
 
     void setAnimationSpeed(int value);
 
-    void setResolution(int value);
     void setRadius(double value);
     void setLoop(bool value);
     void setOnlyShowerFront(bool value);

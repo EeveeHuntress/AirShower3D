@@ -86,7 +86,7 @@ void Detector::draw(glm::mat4 projection_matrix) const
     glUniform3fv(glGetUniformLocation(_program, "ka"), 1, glm::value_ptr(ka));
 
     // call draw
-    glDrawElements(GL_TRIANGLES, 3*_triangles, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
     // unbin vertex array object
     glBindVertexArray(0);
@@ -121,8 +121,6 @@ void Detector::createObject(){
 
     int subdivs = Config::subdivCount;
     float radius = Config::radius;
-
-    _triangles = 4*subdivs ; //number of triangles to be drawn
 
     float hight = 1.2/1.8 * radius;
     const int Nphis = subdivs;

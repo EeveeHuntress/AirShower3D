@@ -172,39 +172,13 @@ background-color: rgb(50, 50, 50);</string>
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <item row="0" column="0">
-           <widget class="QLabel" name="label_resolution">
-            <property name="text">
-             <string>Resolution:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBox_resolution">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="prefix">
-             <string/>
-            </property>
-            <property name="minimum">
-             <number>3</number>
-            </property>
-            <property name="maximum">
-             <number>100</number>
-            </property>
-            <property name="value">
-             <number>48</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
            <widget class="QLabel" name="label_radius">
             <property name="text">
              <string>Radius:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="QDoubleSpinBox" name="spinBox_radius">
             <property name="singleStep">
              <double>0.050000000000000</double>
@@ -214,14 +188,14 @@ background-color: rgb(50, 50, 50);</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="label_levels">
             <property name="text">
              <string>Crowns:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="1" column="1">
            <widget class="QSpinBox" name="spinBox_levels">
             <property name="maximum">
              <number>23</number>
@@ -231,14 +205,14 @@ background-color: rgb(50, 50, 50);</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="label_distance">
             <property name="text">
              <string>Distance:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="2" column="1">
            <widget class="QDoubleSpinBox" name="spinBox_distance">
             <property name="decimals">
              <number>2</number>

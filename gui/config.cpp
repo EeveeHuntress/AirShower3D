@@ -11,8 +11,7 @@ bool Config::localRotation = false;
 bool Config::changeRadius=false;        /** toggle change of resolution of detectors */
 float Config::radius = 1.0f;            /** chanfe resolution factor of detectors */
 
-bool Config::subdivide=false;           /** toggle change of resolution of detectors */
-unsigned int Config::subdivCount=48;    /** chanfe resolution factor of detectors */
+unsigned int Config::subdivCount=18;    /** chanfe resolution factor of detectors */
 
 float Config::time=0.0;                 /** time elapsed for shower animation */
 float Config::maxTime =0.0;

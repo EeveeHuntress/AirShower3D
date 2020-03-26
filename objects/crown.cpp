@@ -93,7 +93,7 @@ void Crown::recreate()
         _number = 1 + 6*(_levels*(_levels+1))/2;
     }
 
-    if(Config::subdivide || Config::changeRadius)
+    if(Config::changeRadius)
     {
         for(int i=0; i<_number; i++)
         {

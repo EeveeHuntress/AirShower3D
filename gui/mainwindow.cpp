@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // connect ui elements to slots
     connect(this->ui->sliderAnimationSpeed, SIGNAL(valueChanged(int)), this, SLOT(setAnimationSpeed(int)));
 
-    connect(this->ui->spinBox_resolution, SIGNAL(valueChanged(int)), this, SLOT(setResolution(int)));
     connect(this->ui->spinBox_radius, SIGNAL(valueChanged(double)), this, SLOT(setRadius(double)));
     connect(this->ui->checkLoop, SIGNAL(clicked(bool)), this, SLOT(setLoop(bool)));
     connect(this->ui->onlyShowerFront, SIGNAL(clicked(bool)), this, SLOT(setOnlyShowerFront(bool)));
@@ -56,13 +55,6 @@ void MainWindow::setOnlyShowerFront(bool value)
 void MainWindow::setLookatShowerFront(bool value)
 {
     Config::lookatShowerFront=value;
-}
-
-void MainWindow::setResolution(int value)
-{
-    Config::subdivCount=value;
-
-    Config::subdivide=true;
 }
 
 void MainWindow::setRadius(double value)
