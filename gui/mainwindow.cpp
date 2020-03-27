@@ -20,6 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->ui->onlyShowerFront, SIGNAL(clicked(bool)), this, SLOT(setOnlyShowerFront(bool)));
     connect(this->ui->lookatShowerFront, SIGNAL(clicked(bool)), this, SLOT(setLookatShowerFront(bool)));
 
+    connect(this->ui->checkBox_em, SIGNAL(clicked(bool)), this, SLOT(setComponentem(bool)));
+    connect(this->ui->checkBox_mu, SIGNAL(clicked(bool)), this, SLOT(setComponentmu(bool)));
+    connect(this->ui->checkBox_hd, SIGNAL(clicked(bool)), this, SLOT(setComponenthd(bool)));
+
     connect(this->ui->playPauseButton, SIGNAL(clicked()), this, SLOT(playPause()));
     connect(this->ui->sliderTime, SIGNAL(valueChanged(int)), this, SLOT(setTime(int)));
 
@@ -43,6 +47,19 @@ void MainWindow::setAnimationSpeed(int value)
 void MainWindow::setLoop(bool value)
 {
     Config::loop=value;
+}
+
+void MainWindow::setComponentem(bool value)
+{
+    Config::emComponent=value;
+}
+void MainWindow::setComponentmu(bool value)
+{
+    Config::muComponent=value;
+}
+void MainWindow::setComponenthd(bool value)
+{
+    Config::hdComponent=value;
 }
 
 void MainWindow::setOnlyShowerFront(bool value)

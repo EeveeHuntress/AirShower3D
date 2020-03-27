@@ -36,8 +36,6 @@ features:
 
 * mountains in the background (either 3d models or some nice texture)
 
-* widget to select which shower components shall be drawn
-
 * as soon as primary type can be read from the config: add extra line for primary particle starting at a fixed distance away fromthe first interaction
 
 * Show relative time conversion factor in gui (next to "Animation: 1.0x")

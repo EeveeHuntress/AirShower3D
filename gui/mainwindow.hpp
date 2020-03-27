@@ -43,6 +43,9 @@ private slots:
     void setOnlyShowerFront(bool value);
     void setLookatShowerFront(bool value);
 
+    void setComponentem(bool value);
+    void setComponentmu(bool value);
+    void setComponenthd(bool value);
 
     void playPause();
     void setTime(int value);

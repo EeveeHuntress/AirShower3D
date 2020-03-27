@@ -30,6 +30,10 @@ public:
     static float maxTime;           /// amount of the shower needs to hit the ground
     static bool loop;               /// loop the animation
 
+    static bool emComponent;
+    static bool muComponent;
+    static bool hdComponent;
+
     static bool onlyShowerFront;    /// only draw shower front
     static bool changedAirshower;   /// checker to toggle between drawing full shower or only shower front
 

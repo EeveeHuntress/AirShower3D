@@ -95,6 +95,9 @@ background-color: rgb(50, 50, 50);</string>
             <property name="text">
              <string>Loop</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -156,6 +159,48 @@ background-color: rgb(50, 50, 50);</string>
             </property>
             <property name="tickInterval">
              <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_components">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(25, 25, 25);</string>
+         </property>
+         <property name="title">
+          <string>Airshower Components:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="checkBox_em">
+            <property name="text">
+             <string>el. magnetic</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_mu">
+            <property name="text">
+             <string>muonic</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_hd">
+            <property name="text">
+             <string>hadronic</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -273,6 +318,7 @@ background-color: rgb(50, 50, 50);</string>
       <zorder>groupBox_detector</zorder>
       <zorder>onlyShowerFront</zorder>
       <zorder>lookatShowerFront</zorder>
+      <zorder>groupBox_components</zorder>
      </widget>
     </item>
    </layout>

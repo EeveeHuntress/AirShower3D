@@ -38,6 +38,7 @@ protected:
     int _levels;
     float _distance;
     int _number;
+    float _radius;
 
     std::vector<Detector> _detectors;       // detectors in the crowns
 
