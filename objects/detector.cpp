@@ -18,9 +18,9 @@
 #include "solarpanel.h"
 
 Detector::Detector(std::string name):
-    Drawable(name),
-    _radius(Config::radius)
+    Drawable(name)
 {
+    _radius = Config::radius;
     Config::subdivCount=18;
 }
 
@@ -112,9 +112,8 @@ void Detector::setLights(std::shared_ptr<ShowerFrontCenter> front)
     _panel.back().setLights(front);
 }
 
-void Detector::createObject(){
-
-
+void Detector::createObject()
+{
     positions.clear();
     indices.clear();
     normals.clear();
@@ -160,8 +159,16 @@ void Detector::createObject(){
         normals.push_back(glm::normalize(glm::vec3(0,-1,0)));
         //middle of top
         positions.push_back(glm::vec3(0.0f,0.0f,hight+addedHight)*rotx);//1+indexCounter
-        ///TODO: for slope the normal has to be calculated
-        normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+        if(!slope)
+        {
+            normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+        }
+        else
+        {
+            glm::vec3 leftSlope = (glm::vec3(0.0f,0.0f,hight+addedHight)-glm::vec3(x3,y3,z3))*rotx;
+            glm::vec3 rightSlope = (glm::vec3(0.0f,0.0f,hight+addedHight)-glm::vec3(x4,y4,z4))*rotx;
+            normals.push_back(glm::normalize(glm::cross(leftSlope, rightSlope)));
+        }
 
         //bottom left for floor
         positions.push_back(glm::vec3(x1,y1,z1)*rotx);//2+indexCounter
