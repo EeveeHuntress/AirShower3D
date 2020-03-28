@@ -55,7 +55,7 @@ void Crown::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         modelview_stack.push(modelViewMatrix);
         glm::vec3 trans= _crownPositions.at(i);
 
-        modelview_stack.top()=glm::translate(modelview_stack.top(),trans/*+glm::vec3(0,0.01,0)*/);
+        modelview_stack.top()=glm::translate(modelview_stack.top(),trans+glm::vec3(0,0.01,0));
 
         _detectors.at(i).update(elapsedTimeMs, modelview_stack.top());
 

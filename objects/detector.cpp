@@ -128,6 +128,10 @@ void Detector::createObject()
     unsigned int indexCounter=0;
 
     glm::mat3 rotx = glm::mat3(glm::vec3(1,0,0),glm::vec3(0,0,1),glm::vec3(0,-1,0));
+    float rotAngle = glm::radians(10.0f);
+    glm::mat3 roty = glm::mat3(glm::vec3(cos(rotAngle),0,sin(rotAngle)),glm::vec3(0,1,0),glm::vec3(-sin(rotAngle),0,cos(rotAngle)));
+
+//    std::cout << cos(10) << std::endl;
 
 
     for(int iphi = 0; iphi < Nphis; iphi++)
@@ -165,60 +169,62 @@ void Detector::createObject()
         }
         else
         {
-            glm::vec3 leftSlope = (glm::vec3(0.0f,0.0f,hight+addedHight)-glm::vec3(x3,y3,z3))*rotx;
-            glm::vec3 rightSlope = (glm::vec3(0.0f,0.0f,hight+addedHight)-glm::vec3(x4,y4,z4))*rotx;
+            glm::vec3 leftSlope = (glm::vec3(0.0f,0.0f,hight+addedHight)-glm::vec3(x3,y3,z3))*rotx*roty;
+            glm::vec3 rightSlope = (glm::vec3(0.0f,0.0f,hight+addedHight)-glm::vec3(x4,y4,z4))*rotx*roty;
             normals.push_back(glm::normalize(glm::cross(leftSlope, rightSlope)));
         }
 
         //bottom left for floor
-        positions.push_back(glm::vec3(x1,y1,z1)*rotx);//2+indexCounter
+        positions.push_back(glm::vec3(x1,y1,z1)*rotx*roty);//2+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,-1,0)));
         //bottom right for floor
-        positions.push_back(glm::vec3(x2,y2,z2)*rotx);//3+indexCounter
+        positions.push_back(glm::vec3(x2,y2,z2)*rotx*roty);//3+indexCounter
         normals.push_back(glm::normalize(glm::vec3(0,-1,0)));
 
         if(slope)
         {
+            glm::vec3 leftSlope = (glm::vec3(0.0f,0.0f,hight+addedHight)-glm::vec3(x3,y3,z3))*rotx*roty;
+            glm::vec3 rightSlope = (glm::vec3(0.0f,0.0f,hight+addedHight)-glm::vec3(x4,y4,z4))*rotx*roty;
             //top left for ceiling
-            positions.push_back(glm::vec3(x3,y3,z3)*rotx);//4+indexCounter
-            normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+            positions.push_back(glm::vec3(x3,y3,z3)*rotx*roty);//4+indexCounter
+            normals.push_back(glm::normalize(glm::cross(leftSlope, rightSlope)));
             //top right for ceiling
-            positions.push_back(glm::vec3(x4,y4,z4)*rotx);//5+indexCounter
-            normals.push_back(glm::normalize(glm::vec3(0,1,0)));
+            positions.push_back(glm::vec3(x4,y4,z4)*rotx*roty);//5+indexCounter
+            normals.push_back(glm::normalize(glm::cross(leftSlope, rightSlope)));
         }
         else
         {
             //top left for ceiling
-            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx);//4+indexCounter
+            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx*roty);//4+indexCounter
             normals.push_back(glm::normalize(glm::vec3(0,1,0)));
             //top right for ceiling
-            positions.push_back(glm::vec3(x4,y4,z4+addedHight)*rotx);//5+indexCounter
+            positions.push_back(glm::vec3(x4,y4,z4+addedHight)*rotx*roty);//5+indexCounter
             normals.push_back(glm::normalize(glm::vec3(0,1,0)));
         }
 
         //bottom left for mantle
-        positions.push_back(glm::vec3(x1,y1,z1)*rotx);//6+indexCounter
+        positions.push_back(glm::vec3(x1,y1,z1)*rotx*roty);//6+indexCounter
         normals.push_back(glm::normalize(positions.at(indexCounter+6)));
         //bottom right for mantle
-        positions.push_back(glm::vec3(x2,y2,z2)*rotx);//7+indexCounter
+        positions.push_back(glm::vec3(x2,y2,z2)*rotx*roty);//7+indexCounter
         normals.push_back(glm::normalize(positions.at(indexCounter+7)));
 
         if(slope)
         {
             //top left for mantle
-            positions.push_back(glm::vec3(x3,y3,z3)*rotx);//8+indexCounter
+            positions.push_back(glm::vec3(x3,y3,z3)*rotx*roty);//8+indexCounter
             normals.push_back(glm::normalize(positions.at(indexCounter+8)));
             //top right for mantle
-            positions.push_back(glm::vec3(x4,y4,z4)*rotx);//9+indexCounter
+            positions.push_back(glm::vec3(x4,y4,z4)*rotx*roty);//9+indexCounter
             normals.push_back(glm::normalize(positions.at(indexCounter+9)));
         }
         else
         {
             //top left for mantle
-            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx);//8+indexCounter
+            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx*roty);//8+indexCounter
             normals.push_back(glm::normalize(positions.at(indexCounter+8)));
             //top right for mantle
-            positions.push_back(glm::vec3(x4,y4,z4+addedHight)*rotx);//9+indexCounter
+            positions.push_back(glm::vec3(x4,y4,z4+addedHight)*rotx*roty);//9+indexCounter
             normals.push_back(glm::normalize(positions.at(indexCounter+9)));
         }
 
@@ -247,21 +253,21 @@ void Detector::createObject()
         {
             glm::vec3 test = glm::vec3(0.0f,2.0f,0.0f);
 
-            positions.push_back(glm::vec3(0.0f,0.0f,hight+addedHight)*rotx);//10+indexCounter
-            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx);//11+indexCounter
-            positions.push_back(glm::vec3(x3,y3,z3)*rotx);//12+indexCounter
+            positions.push_back(glm::vec3(0.0f,0.0f,hight+addedHight)*rotx*roty);//10+indexCounter
+            positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx*roty);//11+indexCounter
+            positions.push_back(glm::vec3(x3,y3,z3)*rotx*roty);//12+indexCounter
 
 
             if(mod6==5)
             {
-                glm::vec3 right = glm::cross(glm::vec3(0.0f,1.0f,0.0f),glm::vec3(x1,y1,z1)*rotx);
+                glm::vec3 right = glm::cross(glm::vec3(0.0f,1.0f,0.0f),glm::vec3(x1,y1,z1)*rotx*roty);
                 normals.push_back(glm::normalize(right));
                 normals.push_back(glm::normalize(right));
                 normals.push_back(glm::normalize(right));
             }
             else
             {
-                glm::vec3 left = glm::cross(glm::vec3(x1,y1,z1)*rotx, glm::vec3(0.0f,1.0f,0.0f));
+                glm::vec3 left = glm::cross(glm::vec3(x1,y1,z1)*rotx*roty, glm::vec3(0.0f,1.0f,0.0f));
                 normals.push_back(glm::normalize(left));
                 normals.push_back(glm::normalize(left));
                 normals.push_back(glm::normalize(left));
