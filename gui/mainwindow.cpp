@@ -77,8 +77,6 @@ void MainWindow::setLookatShowerFront(bool value)
 void MainWindow::setRadius(double value)
 {
     Config::radius=value;
-
-    Config::changeRadius=true;
 }
 
 

@@ -38,7 +38,7 @@ void Detector::recreate()
 {
     //Drawable::recreate();
     glFlush();
-    createObject();
+//    createObject();
 
     _panel.back().recreate();
 }

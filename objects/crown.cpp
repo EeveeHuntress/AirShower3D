@@ -48,19 +48,20 @@ void Crown::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
     // update all detectors
     _modelViewMatrix = modelViewMatrix;
 
-    std::stack<glm::mat4> modelview_stack;
+        std::stack<glm::mat4> modelview_stack;
 
-    for(unsigned int i=0;i< _detectors.size();i++)
-    {
-        modelview_stack.push(modelViewMatrix);
-        glm::vec3 trans= _crownPositions.at(i);
+        for(unsigned int i=0;i< _detectors.size();i++)
+        {
+            modelview_stack.push(modelViewMatrix);
+            glm::vec3 trans= _crownPositions.at(i);
 
-        modelview_stack.top()=glm::translate(modelview_stack.top(),trans+glm::vec3(0,0.01,0));
+            modelview_stack.top()=glm::translate(modelview_stack.top(),trans/*+glm::vec3(0,0.01,0)*/);
+            modelview_stack.top()=glm::scale(modelview_stack.top(), glm::vec3(Config::radius));
 
-        _detectors.at(i).update(elapsedTimeMs, modelview_stack.top());
+            _detectors.at(i).update(elapsedTimeMs, modelview_stack.top());
 
-        modelview_stack.pop();
-    }
+            modelview_stack.pop();
+        }
 
 }
 
@@ -88,18 +89,10 @@ void Crown::recreate()
         _distance=Config::detectorDistance;
     }
 
-    if(Config::crownLevelsChanged && Config::crownLevels<11)
+    if(Config::crownLevelsChanged && Config::crownLevels<24)
     {
         _levels=Config::crownLevels;
         _number = 1 + 6*(_levels*(_levels+1))/2;
-    }
-
-    if(Config::changeRadius)
-    {
-        for(int i=0; i<_number; i++)
-        {
-            _detectors.at(i).recreate();
-        }
     }
 }
 
@@ -112,7 +105,7 @@ void Crown::createObject()
     _detectors.push_back(Detector("Detector 0"));
     _detectors.back().init();
 
-    int maxLevels = 10;
+    int maxLevels = 23;
 
     for (int level=0;level<maxLevels;level++)
     {

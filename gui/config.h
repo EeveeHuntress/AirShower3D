@@ -20,7 +20,6 @@ public:
 
     static bool localRotation;       /**< rotate the planets locally */
 
-    static bool changeRadius;       /// checker for updating detector radius
     static float radius;            /// radius of detector
 
     static bool subdivide;          /// checker if subdivision value has changed and detectors need to recreate

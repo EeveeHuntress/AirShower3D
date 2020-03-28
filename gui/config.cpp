@@ -8,7 +8,6 @@ float Config::animationSpeed = 1.0f;
 
 bool Config::localRotation = false;
 
-bool Config::changeRadius=false;        /** toggle change of resolution of detectors */
 float Config::radius = 1.0f;            /** chanfe resolution factor of detectors */
 
 unsigned int Config::subdivCount=18;    /** chanfe resolution factor of detectors */

@@ -158,8 +158,6 @@ void GLWidget::resizeGL(int width, int height)
 {
     // update the viewport
     glViewport(0, 0, width, height);
-
-    /// TODO: store the resolution in the config in case someone needs it
 }
 
 void GLWidget::paintGL()
@@ -183,14 +181,6 @@ void GLWidget::paintGL()
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-    // when subdivision value changed, recreate planets
-    if(Config::changeRadius)
-    {
-        _crown->recreate();
-        Config::changeRadius=false;
-    }
 
     if(Config::crownLevelsChanged|| Config::distanceChanged)
     {
