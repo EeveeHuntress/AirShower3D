@@ -2,8 +2,6 @@ bugfixes:
 
 * make path for airshower data in config file indepentent of folder name
 
-* detectors: new crown does not use changed values (f.e. radius)
-
 * Airshower is always in front of all other objects (this was necessary 
   since the Shower is completely calculated on the gpu using transparency for
   tracks in the future. Thus depth testing has been disabled for the shower to
@@ -17,6 +15,8 @@ bugfixes:
         that late (i.e. transparent) tracks do never cover early (i.e. opaque) tracks.
       * Now, make sure that the whole shower is drawn last so that the transparent tracks
         are represented correcly
+
+* fix distance of detectors at 0/0.1
 
 operability:
 
@@ -39,3 +39,5 @@ features:
 * as soon as primary type can be read from the config: add extra line for primary particle starting at a fixed distance away fromthe first interaction
 
 * Show relative time conversion factor in gui (next to "Animation: 1.0x")
+
+* button to enable/disable detectors

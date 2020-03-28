@@ -95,22 +95,6 @@ void SolarPanel::draw(glm::mat4 projection_matrix) const
 void SolarPanel::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
 {
     _modelViewMatrix = modelViewMatrix;
-
-    float radius = Config::radius;
-
-    _longside = Config::radius * 0.75f ;
-    _shortside = _longside * 0.5f;
-
-    std::stack<glm::mat4> modelview_stack;
-
-    modelview_stack.push(modelViewMatrix);
-
-        modelview_stack.top()=glm::translate(modelview_stack.top(), glm::vec3(0,0,radius/1.5f));
-
-        _modelViewMatrix=modelview_stack.top();
-
-    modelview_stack.pop();
-
 }
 
 void SolarPanel::recreate()
@@ -163,6 +147,12 @@ void SolarPanel::createObject()
     std::vector<glm::vec2> texCoordOptions;
     std::vector<glm::vec2> texCoords;
 
+
+    _longside = Config::radius * 0.75f ;
+    _shortside = _longside * 0.5f;
+
+    glm::vec3 translate = glm::vec3(0,0,Config::radius/1.5f);
+
     positions.clear();
     indices.clear();
 
@@ -174,10 +164,10 @@ void SolarPanel::createObject()
 
     float newHight = hight + hChange;
 
-    positions.push_back(glm::vec3(_longside/2.0f,hight,0));    //0
-    positions.push_back(glm::vec3(-_longside/2.0f,hight,0));   //1
-    positions.push_back(glm::vec3(_longside/2.0f,newHight,-zChange));   //2
-    positions.push_back(glm::vec3(-_longside/2.0f,newHight,-zChange));  //3
+    positions.push_back(glm::vec3(_longside/2.0f,hight,0)+translate);    //0
+    positions.push_back(glm::vec3(-_longside/2.0f,hight,0)+translate);   //1
+    positions.push_back(glm::vec3(_longside/2.0f,newHight,-zChange)+translate);   //2
+    positions.push_back(glm::vec3(-_longside/2.0f,newHight,-zChange)+translate);  //3
 
 //    std::cout << "Test Position: x=" << positions.at(0).x << ", y=" << positions.at(0).y << ", z=" << positions.at(0).z << std::endl;
 

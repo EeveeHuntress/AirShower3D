@@ -219,7 +219,7 @@ background-color: rgb(50, 50, 50);</string>
           <item row="0" column="0">
            <widget class="QLabel" name="label_radius">
             <property name="text">
-             <string>Radius:</string>
+             <string>Radius/km:</string>
             </property>
            </widget>
           </item>
@@ -229,7 +229,7 @@ background-color: rgb(50, 50, 50);</string>
              <double>0.050000000000000</double>
             </property>
             <property name="value">
-             <double>1.000000000000000</double>
+             <double>0.300000000000000</double>
             </property>
            </widget>
           </item>
@@ -246,14 +246,14 @@ background-color: rgb(50, 50, 50);</string>
              <number>23</number>
             </property>
             <property name="value">
-             <number>3</number>
+             <number>23</number>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_distance">
             <property name="text">
-             <string>Distance:</string>
+             <string>Distance/km:</string>
             </property>
            </widget>
           </item>
@@ -269,7 +269,7 @@ background-color: rgb(50, 50, 50);</string>
              <double>0.500000000000000</double>
             </property>
             <property name="value">
-             <double>3.000000000000000</double>
+             <double>1.500000000000000</double>
             </property>
            </widget>
           </item>

@@ -8,7 +8,7 @@ float Config::animationSpeed = 1.0f;
 
 bool Config::localRotation = false;
 
-float Config::radius = 1.0f;            /** chanfe resolution factor of detectors */
+float Config::radius = 0.3f;            /** chanfe resolution factor of detectors */
 
 unsigned int Config::subdivCount=18;    /** chanfe resolution factor of detectors */
 
@@ -29,10 +29,10 @@ bool Config::changedAirshower=false;    /** signal for the airshowers */
 
 bool Config::lookatShowerFront=false;   /** toggle for camera to look at shower front */
 
-int Config::crownLevels=3;
+int Config::crownLevels=23;
 bool Config::crownLevelsChanged=false;
 
-float Config::detectorDistance=3.0f;
+float Config::detectorDistance=1.5f;
 bool Config::distanceChanged=false;
 
 std::string Config::configFileName="NONE";

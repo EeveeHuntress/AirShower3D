@@ -40,7 +40,7 @@ void Detector::recreate()
     glFlush();
 //    createObject();
 
-    _panel.back().recreate();
+//    _panel.back().recreate();
 }
 
 

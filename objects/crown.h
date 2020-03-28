@@ -36,6 +36,7 @@ public:
 protected:
 
     int _levels;
+    int _maxLevels;
     float _distance;
     int _number;
     float _radius;
