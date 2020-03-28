@@ -263,7 +263,10 @@ background-color: rgb(50, 50, 50);</string>
              <number>2</number>
             </property>
             <property name="minimum">
-             <double>0.100000000000000</double>
+             <double>0.500000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>99.500000000000000</double>
             </property>
             <property name="singleStep">
              <double>0.500000000000000</double>

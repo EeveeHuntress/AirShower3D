@@ -16,8 +16,6 @@ bugfixes:
       * Now, make sure that the whole shower is drawn last so that the transparent tracks
         are represented correcly
 
-* fix distance of detectors at 0/0.1
-
 operability:
 
 * Parse README in cli (make it a qrc-file)
