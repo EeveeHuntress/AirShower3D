@@ -175,10 +175,6 @@ void GLWidget::paintGL()
                 float(m_viewport[2])/m_viewport[3],
                 0.1f, 100.0f);
 
-    _skybox->draw(projection_matrix);
-
-    _ground->draw(projection_matrix);
-
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -189,8 +185,18 @@ void GLWidget::paintGL()
         Config::distanceChanged=false;
     }
 
-    if(!cameraBelow)
-        _crown->draw(projection_matrix);
+    if(Config::enableDetectors)
+    {
+        _skybox->draw(projection_matrix);
+
+        _ground->draw(projection_matrix);
+
+        if(!cameraBelow)
+        {
+
+            _crown->draw(projection_matrix);
+        }
+    }
 
     glEnable(GL_BLEND);
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);

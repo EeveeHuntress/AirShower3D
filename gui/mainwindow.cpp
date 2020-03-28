@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->ui->onlyShowerFront, SIGNAL(clicked(bool)), this, SLOT(setOnlyShowerFront(bool)));
     connect(this->ui->lookatShowerFront, SIGNAL(clicked(bool)), this, SLOT(setLookatShowerFront(bool)));
 
+    connect(this->ui->enable_detectors, SIGNAL(clicked(bool)), this, SLOT(toggleDetector(bool)));
+
     connect(this->ui->checkBox_em, SIGNAL(clicked(bool)), this, SLOT(setComponentem(bool)));
     connect(this->ui->checkBox_mu, SIGNAL(clicked(bool)), this, SLOT(setComponentmu(bool)));
     connect(this->ui->checkBox_hd, SIGNAL(clicked(bool)), this, SLOT(setComponenthd(bool)));
@@ -60,6 +62,11 @@ void MainWindow::setComponentmu(bool value)
 void MainWindow::setComponenthd(bool value)
 {
     Config::hdComponent=value;
+}
+
+void MainWindow::toggleDetector(bool value)
+{
+    Config::enableDetectors=value;
 }
 
 void MainWindow::setOnlyShowerFront(bool value)
