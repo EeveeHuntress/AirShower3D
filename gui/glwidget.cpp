@@ -278,6 +278,9 @@ void GLWidget::animateGL()
         cameraBelow=true;
 
     // update drawables
+    _airshower_hd->updateCam(camera, _sfcenter->getPositionCam());
+    _airshower_em->updateCam(camera, _sfcenter->getPositionCam());
+    _airshower_mu->updateCam(camera, _sfcenter->getPositionCam());
     _airshower_hd->update(timeElapsedMs,modelViewMatrix);
     _airshower_em->update(timeElapsedMs,modelViewMatrix);
     _airshower_mu->update(timeElapsedMs,modelViewMatrix);

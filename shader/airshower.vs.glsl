@@ -4,7 +4,10 @@ uniform mat4 projection_matrix;
 uniform mat4 modelview_matrix;
 
 uniform vec3 col;
+uniform vec3 camerapos;
+uniform vec3 sfcenter;
 uniform float time;
+uniform float maxtime;
 uniform float onlyFront;
 uniform float stepLength;
 
@@ -29,6 +32,18 @@ void main(void)
     vcolor = col;
 
     if((time > timestamp && onlyFront<0.5) || ( abs(time-timestamp)<stepLength && onlyFront>=0.5) )
+        valpha = 1.0f;
+    else
+        valpha = 0.0f;
+
+// Penrose-Terrell effect
+
+    float campartdist = distance(camerapos, pos); // distance between particle and camera
+    float camsfcdist = distance(camerapos, sfcenter); // distance between camera and shower front center
+    float c_vac = 3e5*maxtime; // approximate speed of light in vacuum
+    float lighttime = (campartdist - camsfcdist)/c_vac;
+
+    if((time > timestamp+lighttime && onlyFront<0.5) || ( abs(time-(timestamp+lighttime))<stepLength && onlyFront>=0.5) )
         valpha = 1.0f;
     else
         valpha = 0.0f;
