@@ -10,6 +10,7 @@ uniform float time;
 uniform float maxtime;
 uniform float onlyFront;
 uniform float stepLength;
+uniform float pteffect;
 
 //uniform float time;
 //uniform float currTime;
@@ -42,6 +43,8 @@ void main(void)
     float camsfcdist = distance(camerapos, sfcenter); // distance between camera and shower front center
     float c_vac = 3e5*maxtime; // approximate speed of light in vacuum
     float lighttime = (campartdist - camsfcdist)/c_vac;
+
+    lighttime *= pteffect; //if pteffect is 0.0f(false) the penrose-terrell effect will be neglected
 
     if((time > timestamp+lighttime && onlyFront<0.5) || ( abs(time-(timestamp+lighttime))<stepLength && onlyFront>=0.5) )
         valpha = 1.0f;

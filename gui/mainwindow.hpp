@@ -54,6 +54,8 @@ private slots:
     void setLevels(int value);
     void setDistance(double value);
 
+    void togglePTEffect(bool value);
+
 
 
 protected:

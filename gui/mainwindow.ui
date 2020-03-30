@@ -310,6 +310,13 @@ background-color: rgb(50, 50, 50);</string>
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="penrose_terrell">
+         <property name="text">
+          <string>Penrose-Terrell effect</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -332,6 +339,7 @@ background-color: rgb(50, 50, 50);</string>
       <zorder>onlyShowerFront</zorder>
       <zorder>lookatShowerFront</zorder>
       <zorder>groupBox_components</zorder>
+      <zorder>penrose_terrell</zorder>
      </widget>
     </item>
    </layout>

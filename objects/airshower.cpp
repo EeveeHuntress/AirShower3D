@@ -194,9 +194,18 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
     int cameraposLocation = glGetUniformLocation(_program, "camerapos");
     glUniform3fv(cameraposLocation, 1, glm::value_ptr(_cameraPos));
 
-    // set shower front center in in shader (for Pennrose-Terrell effect)
+    // set shower front center in shader (for Pennrose-Terrell effect)
     int sfcenterLocation = glGetUniformLocation(_program, "sfcenter");
     glUniform3fv(sfcenterLocation, 1, glm::value_ptr(_showerFrontCenter));
+
+    // set "bool" in shader (for Pennrose-Terrell effect)
+    // pteffect=0.0f means the effect will be neglected
+    int pteffect = glGetUniformLocation(_program, "pteffect");
+    if(Config::pteffect)
+        glUniform1f(pteffect, 1.0f);
+    else
+        glUniform1f(pteffect, 0.0f);
+
 
     glBindVertexArray(0);
 

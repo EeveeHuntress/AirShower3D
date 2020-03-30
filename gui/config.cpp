@@ -31,6 +31,8 @@ bool Config::lookatShowerFront=false;   /** toggle for camera to look at shower 
 
 bool Config::enableDetectors=true;
 
+bool Config::pteffect=false;
+
 int Config::crownLevels=23;
 bool Config::crownLevelsChanged=false;
 

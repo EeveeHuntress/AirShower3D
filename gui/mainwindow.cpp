@@ -32,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->ui->spinBox_levels, SIGNAL(valueChanged(int)),this, SLOT(setLevels(int)));
 
     connect(this->ui->spinBox_distance, SIGNAL(valueChanged(double)), this, SLOT(setDistance(double)));
+
+    connect(this->ui->penrose_terrell, SIGNAL(clicked(bool)), this, SLOT(togglePTEffect(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -67,6 +69,11 @@ void MainWindow::setComponenthd(bool value)
 void MainWindow::toggleDetector(bool value)
 {
     Config::enableDetectors=value;
+}
+
+void MainWindow::togglePTEffect(bool value)
+{
+    Config::pteffect=value;
 }
 
 void MainWindow::setOnlyShowerFront(bool value)
