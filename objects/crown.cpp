@@ -69,7 +69,7 @@ void Crown::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
 }
 
 
-void Crown::setLights(std::shared_ptr<ShowerFrontCenter> front)
+void Crown::setLights(glm::vec3 front)
 {
     _showerFront=front;
 

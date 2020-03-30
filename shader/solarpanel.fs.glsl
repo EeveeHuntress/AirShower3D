@@ -24,9 +24,9 @@ void main(void)
     //lighting
 
         //sun
-        vec3 Mpos= vec3((modelview_matrix)*vec4(pos,1));
+        vec3 Mpos= pos;
 
-        vec3 normal = normalize(vec3(transpose(inverse(modelview_matrix))*vec4(0,1,0,0)));
+        vec3 normal = vec3(0,1,0);
         //vec3 normal = vec3(0,1,0);
         vec3 showerLight= normalize(showerPosition-Mpos);
 

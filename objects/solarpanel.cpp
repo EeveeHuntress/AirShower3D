@@ -61,7 +61,7 @@ void SolarPanel::draw(glm::mat4 projection_matrix) const
 
     //shower front
 
-    glUniform3fv(glGetUniformLocation(_program, "showerPosition"),1, glm::value_ptr(_showerFront->getPosition()));
+    glUniform3fv(glGetUniformLocation(_program, "showerPosition"),1, glm::value_ptr(_showerFront));
 
     VERIFY(CG::checkError());
 
@@ -105,7 +105,7 @@ void SolarPanel::recreate()
     createObject();
 }
 
-void SolarPanel::setLights(std::shared_ptr<ShowerFrontCenter> front)
+void SolarPanel::setLights(glm::vec3 front)
 {
     _showerFront=front;
 }

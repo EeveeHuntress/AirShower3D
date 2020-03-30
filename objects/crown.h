@@ -30,7 +30,7 @@ public:
 
 
     // set lighting source
-    virtual void setLights(std::shared_ptr<ShowerFrontCenter> front);
+    virtual void setLights(glm::vec3 front);
 
 
 protected:
@@ -45,7 +45,7 @@ protected:
 
     std::vector<glm::vec3> _crownPositions; // positions of all detectors in crowns
 
-    std::shared_ptr<ShowerFrontCenter> _showerFront;    // shower front for lighting calculation
+    glm::vec3 _showerFront;    // shower front for lighting calculation
 
     glm::mat4 _modelViewMatrix; /**< The model view matrix to get the object into model view space */
 

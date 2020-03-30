@@ -146,8 +146,8 @@ void GLWidget::initializeGL()
     _sfcenter = std::make_shared<ShowerFrontCenter>("ShowerFrontCenter", _airshower_em->getShowerAxis(), glm::vec3(0.0f,(hight-offset)/100000,0.0f));
     _sfcenter->init();
 
-    _ground->setLights(_sfcenter);
-    _crown->setLights(_sfcenter);   //also sets light for detectors
+    _ground->setLights(_sfcenter->getPosition());
+    _crown->setLights(_sfcenter->getPosition());   //also sets light for detectors
 
     _airshower_em->recreate();
     _airshower_mu->recreate();
@@ -276,6 +276,9 @@ void GLWidget::animateGL()
         cameraBelow=false;
     else
         cameraBelow=true;
+
+    _ground->setLights(_sfcenter->getPosition());
+    _crown->setLights(_sfcenter->getPosition());
 
     // update drawables
     _airshower_hd->update(timeElapsedMs,modelViewMatrix);

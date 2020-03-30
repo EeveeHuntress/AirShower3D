@@ -143,7 +143,8 @@ std::string ShowerFrontCenter::getFragmentShader() const
 
 glm::vec3 ShowerFrontCenter::getPosition()
 {
-    return glm::vec3(_modelViewMatrix* glm::vec4(_pos,1));
+//    return glm::vec3(_modelViewMatrix* glm::vec4(_pos,1));
+    return _pos;
 }
 
 glm::vec3 ShowerFrontCenter::getPositionCam()

@@ -8,8 +8,6 @@
 #include <stack>
 #include <glm/vec3.hpp>
 
-#include "sfcenter.h"
-
 class Ground : public Drawable
 {
 public:
@@ -37,7 +35,7 @@ public:
     std::vector<unsigned int> indices;
     std::vector<glm::vec3> positions;
 
-    virtual void setLights(std::shared_ptr<ShowerFrontCenter> front);
+    virtual void setLights(glm::vec3 front);
 
 protected:
 
@@ -65,7 +63,7 @@ protected:
     std::string _textureLocation;
     GLuint textureID;
 
-    std::shared_ptr<ShowerFrontCenter> _showerFront;
+    glm::vec3 _showerFront;
 
     //everything needed for shadows
     GLuint depthMapFBO;

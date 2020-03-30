@@ -66,7 +66,7 @@ void Detector::draw(glm::mat4 projection_matrix) const
 
     //shower front
 
-    glUniform3fv(glGetUniformLocation(_program, "showerPosition"),1, glm::value_ptr(_showerFront->getPosition()));
+    glUniform3fv(glGetUniformLocation(_program, "showerPosition"),1, glm::value_ptr(_showerFront));
 
     VERIFY(CG::checkError());
 
@@ -76,11 +76,11 @@ void Detector::draw(glm::mat4 projection_matrix) const
     glUniform3fv(glGetUniformLocation(_program, "Ls"), 1, glm::value_ptr(Ls));
     glm::vec3 Ld(0.6f);
     glUniform3fv(glGetUniformLocation(_program, "Ld"), 1, glm::value_ptr(Ld));
-    float shininess = 3.f;
+    float shininess = 1.f;
     glUniform1f(glGetUniformLocation(_program, "shininess"), shininess);
-    glm::vec3 kd(0.7f);
+    glm::vec3 kd(0.8f);
     glUniform3fv(glGetUniformLocation(_program, "kd"), 1, glm::value_ptr(kd));
-    glm::vec3 ks(.3f);
+    glm::vec3 ks(.2f);
     glUniform3fv(glGetUniformLocation(_program, "ks"), 1, glm::value_ptr(ks));
     glm::vec3 ka(0.3f);
     glUniform3fv(glGetUniformLocation(_program, "ka"), 1, glm::value_ptr(ka));
@@ -106,7 +106,7 @@ void Detector::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
     _panel.back().update(elapsedTimeMs, _modelViewMatrix);
 }
 
-void Detector::setLights(std::shared_ptr<ShowerFrontCenter> front)
+void Detector::setLights(glm::vec3 front)
 {
     _showerFront=front;
     _panel.back().setLights(front);
@@ -204,28 +204,28 @@ void Detector::createObject()
 
         //bottom left for mantle
         positions.push_back(glm::vec3(x1,y1,z1)*rotx*roty);//6+indexCounter
-        normals.push_back(glm::normalize(positions.at(indexCounter+6)));
+        normals.push_back(/*glm::normalize*/(positions.at(indexCounter+6)));
         //bottom right for mantle
         positions.push_back(glm::vec3(x2,y2,z2)*rotx*roty);//7+indexCounter
-        normals.push_back(glm::normalize(positions.at(indexCounter+7)));
+        normals.push_back(/*glm::normalize*/(positions.at(indexCounter+7)));
 
         if(slope)
         {
             //top left for mantle
             positions.push_back(glm::vec3(x3,y3,z3)*rotx*roty);//8+indexCounter
-            normals.push_back(glm::normalize(positions.at(indexCounter+8)));
+            normals.push_back(/*glm::normalize*/(positions.at(indexCounter+6)));
             //top right for mantle
             positions.push_back(glm::vec3(x4,y4,z4)*rotx*roty);//9+indexCounter
-            normals.push_back(glm::normalize(positions.at(indexCounter+9)));
+            normals.push_back(/*glm::normalize*/(positions.at(indexCounter+7)));
         }
         else
         {
             //top left for mantle
             positions.push_back(glm::vec3(x3,y3,z3+addedHight)*rotx*roty);//8+indexCounter
-            normals.push_back(glm::normalize(positions.at(indexCounter+8)));
+            normals.push_back(/*glm::normalize*/(positions.at(indexCounter+6)));
             //top right for mantle
             positions.push_back(glm::vec3(x4,y4,z4+addedHight)*rotx*roty);//9+indexCounter
-            normals.push_back(glm::normalize(positions.at(indexCounter+9)));
+            normals.push_back(/*glm::normalize*/(positions.at(indexCounter+7)));
         }
 
 
@@ -286,8 +286,6 @@ void Detector::createObject()
                 indices.push_back(indexCounter+12);
                 indices.push_back(indexCounter+11);
             }
-
-
             indexCounter+=3;
         }
 

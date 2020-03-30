@@ -42,7 +42,7 @@ public:
     /**
      * @brief change light source
      */
-    virtual void setLights(std::shared_ptr<ShowerFrontCenter> front);
+    virtual void setLights(glm::vec3 front);
 
 
 
@@ -61,7 +61,7 @@ protected:
 
     std::vector<SolarPanel> _panel;
 
-    std::shared_ptr<ShowerFrontCenter> _showerFront;
+    glm::vec3 _showerFront;
 
     /**
      * @see Drawable::createObject()
