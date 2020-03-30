@@ -18,6 +18,8 @@ bugfixes:
 
 * lighting doesn't use actual position of detectors, thus lighting is the same for every detector
 
+* when focused on showerfront, camera rotates when zooming in
+
 operability:
 
 * Parse README in cli (make it a qrc-file)
