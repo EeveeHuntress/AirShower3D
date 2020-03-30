@@ -32,21 +32,22 @@ void main(void)
 //    vcolor= vec3(1.0f,0.0f,0.0f);
     vcolor = col;
 
-    if((time > timestamp && onlyFront<0.5) || ( abs(time-timestamp)<stepLength && onlyFront>=0.5) )
+
+
+   // calc light-travel time for Penrose-Terrell effect
+   float campartdist = distance(camerapos, pos); // distance between particle and camera
+   float camsfcdist = distance(camerapos, sfcenter); // distance between camera and shower front center
+   float c_vac = 3e5*maxtime; // approximate speed of light in vacuum
+   float lighttime = (campartdist - camsfcdist)/c_vac;
+   lighttime *= pteffect; //if pteffect is 0.0f(false) the penrose-terrell effect will be neglected
+
+    // test if vertex should be drawn
+    // onlyFront acts as a boolean here -> onlyFront=1.0f means only the showerfront is drawn
+    //if onlyFront=0.0f every vertex with a timestamp below the actual time is drawn
+    if( time > timestamp+lighttime && onlyFront<0.5 )
         valpha = 1.0f;
-    else
-        valpha = 0.0f;
-
-// Penrose-Terrell effect
-
-    float campartdist = distance(camerapos, pos); // distance between particle and camera
-    float camsfcdist = distance(camerapos, sfcenter); // distance between camera and shower front center
-    float c_vac = 3e5*maxtime; // approximate speed of light in vacuum
-    float lighttime = (campartdist - camsfcdist)/c_vac;
-
-    lighttime *= pteffect; //if pteffect is 0.0f(false) the penrose-terrell effect will be neglected
-
-    if((time > timestamp+lighttime && onlyFront<0.5) || ( abs(time-(timestamp+lighttime))<stepLength && onlyFront>=0.5) )
+    //if onlyFront=1.0f only vertices with a timestamp close to the actual time are drawn
+    else if( abs(time-timestamp-lighttime)<stepLength && onlyFront>=0.5)
         valpha = 1.0f;
     else
         valpha = 0.0f;
