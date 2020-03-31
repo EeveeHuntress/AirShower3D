@@ -33,6 +33,13 @@ public:
     virtual void draw(glm::mat4 projection_matrix) const override;
 
     /**
+     * @brief updateCam
+     * @param cameraPos
+     */
+
+    virtual void updateCam(glm::vec3 cameraPos, glm::vec3 showerFrontCenter);
+
+    /**
      * @see Drawable::update(float, glm::mat4)
      */
     virtual void update(float elapsedTimeMs, glm::mat4 modelViewMatrix) override;
@@ -88,6 +95,8 @@ protected:
     glm::vec3 _axis;                /** shower axis is input when simulating the data*/
 
     glm::vec3 _showerFront;
+    glm::vec3 _showerFrontCenter;
+
 
     glm::vec3 _max;
     glm::vec3 _min;
@@ -97,6 +106,8 @@ protected:
     float _sizeFactor;
 
     glm::vec3 _color;
+
+    glm::vec3 _cameraPos;
 
     int _lines;             /**< number of lines to be drawn*/
 

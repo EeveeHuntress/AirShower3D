@@ -102,11 +102,13 @@ void Airshower::draw(glm::mat4 projection_matrix) const
     // set parameter
     glUniformMatrix4fv(glGetUniformLocation(_program, "projection_matrix"), 1, GL_FALSE, glm::value_ptr(projection_matrix));
     glUniformMatrix4fv(glGetUniformLocation(_program, "modelview_matrix"), 1, GL_FALSE, glm::value_ptr(_modelViewMatrix));
-
     // set color in shader
     int colLocation = glGetUniformLocation(_program, "col");
-    glUniform3fv(colLocation, 1 ,glm::value_ptr(_color));
-
+    glUniform3fv(colLocation, 1,glm::value_ptr(_color));
+    // set maxtime in shader
+    int maxtimeLocation = glGetUniformLocation(_program, "maxtime");
+    glUniform1f(maxtimeLocation, Config::maxTime);
+    // set stepLength in shader
     int stepLocation = glGetUniformLocation(_program, "stepLength");
     glUniform1f(stepLocation, 1.0f/float(steps));
 
@@ -122,6 +124,13 @@ void Airshower::draw(glm::mat4 projection_matrix) const
 
     // check for errors
     VERIFY(CG::checkError());
+}
+
+
+void Airshower::updateCam(glm::vec3 cameraPos, glm::vec3 showerFrontCenter)
+{
+    _cameraPos = cameraPos;
+    _showerFrontCenter = showerFrontCenter;
 }
 
 void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
@@ -181,10 +190,28 @@ void Airshower::update(float elapsedTimeMs, glm::mat4 modelViewMatrix)
         showerFront = 1.0f;
     glUniform1f(boolLocation, showerFront );
 
+    // set camera position in shader (for Pennrose-Terrell effect)
+    int cameraposLocation = glGetUniformLocation(_program, "camerapos");
+    glUniform3fv(cameraposLocation, 1, glm::value_ptr(_cameraPos));
+
+    // set shower front center in shader (for Pennrose-Terrell effect)
+    int sfcenterLocation = glGetUniformLocation(_program, "sfcenter");
+    glUniform3fv(sfcenterLocation, 1, glm::value_ptr(_showerFrontCenter));
+
+    // set "bool" in shader (for Pennrose-Terrell effect)
+    // pteffect=0.0f means the effect will be neglected
+    int pteffect = glGetUniformLocation(_program, "pteffect");
+    if(Config::pteffect)
+        glUniform1f(pteffect, 1.0f);
+    else
+        glUniform1f(pteffect, 0.0f);
+
+
     glBindVertexArray(0);
 
     _modelViewMatrix = modelViewMatrix;
 }
+
 
 
 void Airshower::createObject()

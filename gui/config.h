@@ -49,6 +49,8 @@ public:
     static float detectorDistance;  /// distance between detectors
     static bool distanceChanged;    /// checker for changing distance
 
+    static bool pteffect;
+
     static std::string configFileName; // name of the user-degfined config file
     static std::string pathToAirshowerFiles; // path to the airshower data files
 
