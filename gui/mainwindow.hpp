@@ -51,6 +51,8 @@ private slots:
     void playPause();
     void setTime(int value);
 
+    void changeBackground(bool value);
+
     void setLevels(int value);
     void setDistance(double value);
 

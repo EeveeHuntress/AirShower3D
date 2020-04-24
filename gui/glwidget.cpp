@@ -162,6 +162,16 @@ void GLWidget::resizeGL(int width, int height)
 
 void GLWidget::paintGL()
 {
+    if(Config::whiteBackground)
+    {
+        //change to white background
+        glClearColor(1.0f,1.0f,1.0f,0.0f);
+    }
+    else
+    {
+        //change to black background
+        glClearColor(0.0f,0.0f,0.0f,0.0f);
+    }
     // Render: set up view
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -196,6 +206,7 @@ void GLWidget::paintGL()
 
             _crown->draw(projection_matrix);
         }
+
     }
 
     glEnable(GL_BLEND);

@@ -42,6 +42,7 @@ public:
     static float pauseTime;         /// time saved when paused
 
     static bool enableDetectors;
+    static bool whiteBackground;
 
     static int crownLevels;         /// levels of detector crowns to draw
     static bool crownLevelsChanged; /// checker for updating crown levels

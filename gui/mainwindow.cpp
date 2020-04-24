@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->ui->playPauseButton, SIGNAL(clicked()), this, SLOT(playPause()));
     connect(this->ui->sliderTime, SIGNAL(valueChanged(int)), this, SLOT(setTime(int)));
 
+    connect(this->ui->checkBox_background, SIGNAL(clicked(bool)), this, SLOT(changeBackground(bool)));
+
     connect(this->ui->spinBox_levels, SIGNAL(valueChanged(int)),this, SLOT(setLevels(int)));
 
     connect(this->ui->spinBox_distance, SIGNAL(valueChanged(double)), this, SLOT(setDistance(double)));
@@ -69,6 +71,11 @@ void MainWindow::setComponenthd(bool value)
 void MainWindow::toggleDetector(bool value)
 {
     Config::enableDetectors=value;
+}
+
+void MainWindow::changeBackground(bool value)
+{
+    Config::whiteBackground=value;
 }
 
 void MainWindow::togglePTEffect(bool value)

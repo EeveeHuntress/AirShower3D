@@ -30,6 +30,7 @@ bool Config::changedAirshower=false;    /** signal for the airshowers */
 bool Config::lookatShowerFront=false;   /** toggle for camera to look at shower front */
 
 bool Config::enableDetectors=true;
+bool Config::whiteBackground=false;
 
 bool Config::pteffect=false;
 
