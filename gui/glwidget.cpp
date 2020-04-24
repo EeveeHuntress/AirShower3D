@@ -214,12 +214,12 @@ void GLWidget::paintGL()
     glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
 
-    if(Config::hdComponent)
-        _airshower_hd->draw(projection_matrix);
-    if(Config::muComponent)
-        _airshower_mu->draw(projection_matrix);
     if(Config::emComponent)
         _airshower_em->draw(projection_matrix);
+    if(Config::muComponent)
+        _airshower_mu->draw(projection_matrix);
+    if(Config::hdComponent)
+        _airshower_hd->draw(projection_matrix);
 }
 
 //default values for camera position
