@@ -373,51 +373,117 @@ void Airshower::readFromFile()
 
     bool first = true;
 
-    //read file
-    QFile myfile(_dataPath.c_str());
-    QTextStream in(&myfile);
-
-    if (myfile.open(QFile::ReadOnly | QFile::Text))
+    // read file
+    if(Config::pathToAirshowerFiles != "DEFAULT") // if defined read custom (binary-)file from config
     {
-        //converted data
-        float xstart,ystart,zstart,tstart, xend,yend,zend,tend, trash;
+        std::ifstream myfile;
+        myfile.open(_dataPath.c_str(), std::ios_base::in | std::ios_base::binary);
 
-        //write data to attributes
-        while(!myfile.atEnd()/* && testCounter<880210*/)
+        if(myfile.is_open())
         {
-            in >> trash >> trash >> xstart >> ystart >> zstart >> tstart >> xend >> yend >> zend >> tend /*>> trash*/;
+            std::cout << "reading " << _type << "-shower into memory...";
+            float particle, energy, xstart, ystart, zstart, tstart, xend, yend, zend, tend, trash;
+            myfile.read((char*)&trash,4); // first 4 bytes in each file are bullshit
 
-            if(!(first && _type.compare("hd") == 0))
+            while(!myfile.eof())
             {
+                myfile.read((char*)&particle,4);
+                myfile.read((char*)&energy,4);
+                myfile.read((char*)&xstart,4);
+                myfile.read((char*)&ystart,4);
+                myfile.read((char*)&zstart,4);
+                myfile.read((char*)&tstart,4);
+                myfile.read((char*)&xend,4);
+                myfile.read((char*)&yend,4);
+                myfile.read((char*)&zend,4);
+                myfile.read((char*)&tend,4);
+                myfile.read((char*)&trash,4); //
+                myfile.read((char*)&trash,4); // last 16 bytes in each line
+                myfile.read((char*)&trash,4); // are also bullshit
+                myfile.read((char*)&trash,4); //   ...dunno why
 
-            if(_maxTime<tend)
-                _maxTime = tend;
+                if(!(first && _type.compare("hd") == 0)) // skip first particle of hd shower (has to be more flexible if photon primaries are considered)
+                {
 
-            //find min and max points
-            if(_min.y>zend)
-              _min = glm::vec3(xend,zend,yend);
-            if(_max.y<zstart)
-              _max = glm::vec3(xstart,zstart,ystart);
+                    if(_maxTime<tend)
+                        _maxTime = tend;
 
-            //create new track
-            positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
-            timestamps.push_back(tstart);
-            positions.push_back(glm::vec3(xend,zend,yend)*_sizeFactor);
-            timestamps.push_back(tend);
+                    //find min and max points
+                    if(_min.y>zend)
+                        _min = glm::vec3(xend,zend,yend);
+                    if(_max.y<zstart)
+                        _max = glm::vec3(xstart,zstart,ystart);
+
+                    //create new track
+                    positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
+                    timestamps.push_back(tstart);
+                    positions.push_back(glm::vec3(xend,zend,yend)*_sizeFactor);
+                    timestamps.push_back(tend);
+                }
+                else
+                {
+                    first = false;
+                }
+
+                if(myfile.eof())
+                    break;
             }
-            else
-            {
-//                std::cout << "Test" << std::endl;
-                first = false;
-            }
+
+            myfile.close();
+            std::cout << " done." << std::endl;
         }
-
-      myfile.close();
+        else
+        {
+            std::cout << "Could not open file " << _dataPath << std::endl;
+            std::cout << "Creating Testshower..." << std::endl;
+        }
     }
-    else
+    else // use sampleshower
     {
-        std::cout << "Could not open file " << _dataPath << std::endl;
-        std::cout << "Creating Testshower..." << std::endl;
+        QFile myfile(_dataPath.c_str());
+        QTextStream in(&myfile);
+        if (myfile.open(QFile::ReadOnly | QFile::Text))
+        {
+            //converted data
+            float xstart,ystart,zstart,tstart, xend,yend,zend,tend, trash;
+
+            //write data to attributes
+            while(!myfile.atEnd()/* && testCounter<880210*/)
+            {
+                in >> trash >> trash >> xstart >> ystart >> zstart >> tstart >> xend >> yend >> zend >> tend /*>> trash*/;
+
+                if(!(first && _type.compare("hd") == 0))
+                {
+
+                    if(_maxTime<tend)
+                        _maxTime = tend;
+
+                    //find min and max points
+                    if(_min.y>zend)
+                        _min = glm::vec3(xend,zend,yend);
+                    if(_max.y<zstart)
+                        _max = glm::vec3(xstart,zstart,ystart);
+
+                    //create new track
+                    positions.push_back(glm::vec3(xstart,zstart,ystart)*_sizeFactor);
+                    timestamps.push_back(tstart);
+                    positions.push_back(glm::vec3(xend,zend,yend)*_sizeFactor);
+                    timestamps.push_back(tend);
+                }
+                else
+                {
+                    //                std::cout << "Test" << std::endl;
+                    first = false;
+                }
+            }
+
+            myfile.close();
+        }
+        else
+        {
+            std::cout << "Could not open sample shower " << _dataPath << std::endl;
+            std::cout << "Creating Testshower..." << std::endl;
+        }
     }
 }
 
