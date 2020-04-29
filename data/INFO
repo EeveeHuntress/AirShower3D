@@ -1,4 +1,5 @@
-Add air shower data here.
+Add air shower data here. In this directory, the data for the sample shower is stored that will 
+be generated if no user defined shower is specified
 
 expected names are
   - track000001.em.txt (for electromagnetic shower component)

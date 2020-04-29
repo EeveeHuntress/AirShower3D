@@ -1,7 +1,5 @@
 bugfixes:
 
-* make path for airshower data in config file indepentent of folder name
-
 * Airshower is always in front of all other objects (this was necessary 
   since the Shower is completely calculated on the gpu using transparency for
   tracks in the future. Thus depth testing has been disabled for the shower to
@@ -16,6 +14,9 @@ bugfixes:
       * Now, make sure that the whole shower is drawn last so that the transparent tracks
         are represented correcly
 
+* shower front center is not calculated correctly: for some showers it does not coincide with the shower front.
+  This messes up the lighting and the "follow shower front"-option.
+
 * lighting doesn't use actual position of detectors, thus lighting is the same for every detector
 
 * when focused on showerfront, camera rotates when zooming in
@@ -25,10 +26,6 @@ operability:
 * Parse README in cli (make it a qrc-file)
 
 * check for maximum file size (rn 1.5G em-showers chrash at compile time) for user-defined showers: use ifstream instead of GFile here
-
-performance:
-
-* read directly from CORSIKA binary instead of acsi table (or at least include binary2asci converter to repo)
 
 features:
 
