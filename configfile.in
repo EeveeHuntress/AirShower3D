@@ -9,3 +9,12 @@ ShowerAxisZenith=30.f
 # Simulated azimuth angle of primary particle / deg
 ShowerAxisAzimuth=0.f
 
+# Energy threshold (in GeV) for electromagnetic component
+ECut_em = 1E50f
+
+# Energy threshold (in GeV) for muonic component
+ECut_mu = 1E50f
+
+# Energy threshold (in GeV) for hadronic component
+ECut_hd = 1E50f
+

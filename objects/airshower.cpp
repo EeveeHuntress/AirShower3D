@@ -371,6 +371,11 @@ void Airshower::readFromFile()
     positions.clear();
     timestamps.clear();
 
+    float eCut;
+    if(_type == "em") eCut = Config::eCut_em;
+    if(_type == "hd") eCut = Config::eCut_hd;
+    if(_type == "mu") eCut = Config::eCut_mu;
+
     bool first = true;
 
     // read file
@@ -401,6 +406,8 @@ void Airshower::readFromFile()
                 myfile.read((char*)&trash,4); // last 16 bytes in each line
                 myfile.read((char*)&trash,4); // are also bullshit
                 myfile.read((char*)&trash,4); //   ...dunno why
+
+                if(energy < eCut) continue;
 
                 if(!(first && _type.compare("hd") == 0)) // skip first particle of hd shower (has to be more flexible if photon primaries are considered)
                 {

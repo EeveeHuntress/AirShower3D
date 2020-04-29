@@ -57,6 +57,10 @@ public:
 
     static float showerAxisZenith;           // zenith angle of the simulated shower axis
     static float showerAxisAzimuth;          // azimuth angle of the simulated shower axis
+
+    static float eCut_em; // energy thresholds for particle tracks
+    static float eCut_hd;
+    static float eCut_mu;
 };
 
 #endif // CONFIG_H

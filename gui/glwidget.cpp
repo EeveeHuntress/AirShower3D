@@ -47,6 +47,9 @@ GLWidget::GLWidget(QWidget *&parent) : QOpenGLWidget(parent),//static_cast<QWidg
       configfile.readInto<std::string>(Config::pathToAirshowerFiles, "PathToAirshowerFiles");
       configfile.readInto<float>(Config::showerAxisZenith, "ShowerAxisZenith");
       configfile.readInto<float>(Config::showerAxisAzimuth, "ShowerAxisAzimuth");
+      configfile.readInto<float>(Config::eCut_em, "ECut_em");
+      configfile.readInto<float>(Config::eCut_hd, "ECut_hd");
+      configfile.readInto<float>(Config::eCut_mu, "ECut_mu");
     }
 
     // create all drawable elements
