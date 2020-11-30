@@ -75,7 +75,7 @@ void Crown::setLights(glm::vec3 front)
 
     for(unsigned int i=0;i< _detectors.size();i++)
     {
-        _detectors.at(i).setLights(front);
+        _detectors.at(i).setLights(front-_crownPositions.at(i));
     }
 }
 
