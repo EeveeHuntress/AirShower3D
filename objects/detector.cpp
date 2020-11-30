@@ -74,13 +74,13 @@ void Detector::draw(glm::mat4 projection_matrix) const
     glUniform3fv(glGetUniformLocation(_program, "La"), 1, glm::value_ptr(La));
     glm::vec3 Ls(1.0, 1.0, 1.0);
     glUniform3fv(glGetUniformLocation(_program, "Ls"), 1, glm::value_ptr(Ls));
-    glm::vec3 Ld(0.6f);
+    glm::vec3 Ld(1.0f);
     glUniform3fv(glGetUniformLocation(_program, "Ld"), 1, glm::value_ptr(Ld));
     float shininess = 1.f;
     glUniform1f(glGetUniformLocation(_program, "shininess"), shininess);
-    glm::vec3 kd(0.5f);
+    glm::vec3 kd(1.0f);
     glUniform3fv(glGetUniformLocation(_program, "kd"), 1, glm::value_ptr(kd));
-    glm::vec3 ks(0.1f);
+    glm::vec3 ks(0.5f);
     glUniform3fv(glGetUniformLocation(_program, "ks"), 1, glm::value_ptr(ks));
     glm::vec3 ka(0.3f);
     glUniform3fv(glGetUniformLocation(_program, "ka"), 1, glm::value_ptr(ka));

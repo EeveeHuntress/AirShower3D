@@ -122,43 +122,43 @@ void Ground::createObject()
 
 
 
-        // Set up a vertex array object for the geometry
-        if(_vertexArrayObject == 0)
-            glGenVertexArrays(1, &_vertexArrayObject);
-        glBindVertexArray(_vertexArrayObject);
+    // Set up a vertex array object for the geometry
+    if(_vertexArrayObject == 0)
+        glGenVertexArrays(1, &_vertexArrayObject);
+    glBindVertexArray(_vertexArrayObject);
 
 
-        // fill vertex array object with data
-        GLuint position_buffer;
-        glGenBuffers(1, &position_buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, position_buffer);
-        glBufferData(GL_ARRAY_BUFFER, positions.size() * 3 * sizeof(float), positions.data(), GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(0);
+    // fill vertex array object with data
+    GLuint position_buffer;
+    glGenBuffers(1, &position_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, position_buffer);
+    glBufferData(GL_ARRAY_BUFFER, positions.size() * 3 * sizeof(float), positions.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
 
 
-        GLuint index_buffer;
-        glGenBuffers(1, &index_buffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+    GLuint index_buffer;
+    glGenBuffers(1, &index_buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
 
-        GLuint tex_buffer;
-        glGenBuffers(1,&tex_buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, tex_buffer);
-        glBufferData(GL_ARRAY_BUFFER, texCoords.size()*sizeof (glm::vec2),texCoords.data(),GL_STATIC_DRAW);
-        glVertexAttribPointer(1,2,GL_FLOAT,GL_TRUE,0,0);
-        glEnableVertexAttribArray(1);
+    GLuint tex_buffer;
+    glGenBuffers(1,&tex_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, tex_buffer);
+    glBufferData(GL_ARRAY_BUFFER, texCoords.size()*sizeof (glm::vec2),texCoords.data(),GL_STATIC_DRAW);
+    glVertexAttribPointer(1,2,GL_FLOAT,GL_TRUE,0,0);
+    glEnableVertexAttribArray(1);
 
-        // unbind vertex array object
-        glBindVertexArray(0);
-        // delete buffers (the data is stored in the vertex array object)
-        glDeleteBuffers(1, &position_buffer);
-        glDeleteBuffers(1, &index_buffer);
-        glDeleteBuffers(1,&tex_buffer);
+    // unbind vertex array object
+    glBindVertexArray(0);
+    // delete buffers (the data is stored in the vertex array object)
+    glDeleteBuffers(1, &position_buffer);
+    glDeleteBuffers(1, &index_buffer);
+    glDeleteBuffers(1,&tex_buffer);
 
-        // check for errors
-        VERIFY(CG::checkError());
+    // check for errors
+    VERIFY(CG::checkError());
 }
 
 

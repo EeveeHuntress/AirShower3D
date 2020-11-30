@@ -38,6 +38,7 @@ void main(void)
         float distance = length(showerPosition-Mpos);
         float lightFluxNormalization = 100.0f;
         float lightFlux = lightFluxNormalization / (distance*distance);
+        if(lightFlux > 1.f) lightFlux = 1.f;
 
         //ambient lighting
         vec3 ambient= ka*La;
