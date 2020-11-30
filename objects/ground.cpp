@@ -65,7 +65,7 @@ void Ground::draw(glm::mat4 projection_matrix) const
     glUniform3fv(glGetUniformLocation(_program, "La"), 1, glm::value_ptr(La));
     glm::vec3 Ls(1.0, 1.0, 1.0);
     glUniform3fv(glGetUniformLocation(_program, "Ls"), 1, glm::value_ptr(Ls));
-    glm::vec3 Ld(0.6f);
+    glm::vec3 Ld(0.8f);
     glUniform3fv(glGetUniformLocation(_program, "Ld"), 1, glm::value_ptr(Ld));
     float shininess = 2.f;
     glUniform1f(glGetUniformLocation(_program, "shininess"), shininess);
