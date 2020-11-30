@@ -78,9 +78,9 @@ void Detector::draw(glm::mat4 projection_matrix) const
     glUniform3fv(glGetUniformLocation(_program, "Ld"), 1, glm::value_ptr(Ld));
     float shininess = 1.f;
     glUniform1f(glGetUniformLocation(_program, "shininess"), shininess);
-    glm::vec3 kd(0.8f);
+    glm::vec3 kd(0.5f);
     glUniform3fv(glGetUniformLocation(_program, "kd"), 1, glm::value_ptr(kd));
-    glm::vec3 ks(.2f);
+    glm::vec3 ks(0.1f);
     glUniform3fv(glGetUniformLocation(_program, "ks"), 1, glm::value_ptr(ks));
     glm::vec3 ka(0.3f);
     glUniform3fv(glGetUniformLocation(_program, "ka"), 1, glm::value_ptr(ka));

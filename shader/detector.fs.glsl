@@ -35,14 +35,18 @@ void main(void)
         vec3 view= normalize(-Mpos);
         vec3 r= (reflect(-view,normal));
 
+        float distance = length(showerPosition-Mpos);
+        float lightFluxNormalization = 100.0f;
+        float lightFlux = lightFluxNormalization / (distance*distance);
+
         //ambient lighting
         vec3 ambient= ka*La;
         //diffuse lighting
-        vec3 diffuse= kd*Ld* max(dot(showerLight,normal),0.0);
+        vec3 diffuse= lightFlux * kd*Ld* max(dot(showerLight,normal),0.0);
 
         //specular lighting
 
-        vec3 spec= ks*Ls*pow(max(dot(r,showerLight),0.0),shininess);
+        vec3 spec= lightFlux * ks*Ls*pow(max(dot(r,showerLight),0.0),shininess);
         vec3 color = (ambient+diffuse+spec);
 
         fcolor = vec4(vcolor,1)*(vec4(color,1));
