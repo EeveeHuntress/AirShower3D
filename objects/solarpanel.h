@@ -40,6 +40,7 @@ public:
 
     std::vector<unsigned int> indices;
     std::vector<glm::vec3> positions;
+    std::vector<glm::vec3> normals;
 
     virtual void setLights(glm::vec3 front);
 

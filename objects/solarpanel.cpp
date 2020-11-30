@@ -69,15 +69,15 @@ void SolarPanel::draw(glm::mat4 projection_matrix) const
     glUniform3fv(glGetUniformLocation(_program, "La"), 1, glm::value_ptr(La));
     glm::vec3 Ls(1.0, 1.0, 1.0);
     glUniform3fv(glGetUniformLocation(_program, "Ls"), 1, glm::value_ptr(Ls));
-    glm::vec3 Ld(0.6f);
+    glm::vec3 Ld(1.0f);
     glUniform3fv(glGetUniformLocation(_program, "Ld"), 1, glm::value_ptr(Ld));
     float shininess = 10.f;
     glUniform1f(glGetUniformLocation(_program, "shininess"), shininess);
-    glm::vec3 kd(0.9f);
+    glm::vec3 kd(1.0f);
     glUniform3fv(glGetUniformLocation(_program, "kd"), 1, glm::value_ptr(kd));
-    glm::vec3 ks(.5f);
+    glm::vec3 ks(0.5f);
     glUniform3fv(glGetUniformLocation(_program, "ks"), 1, glm::value_ptr(ks));
-    glm::vec3 ka(0.5f);
+    glm::vec3 ka(0.3f);
     glUniform3fv(glGetUniformLocation(_program, "ka"), 1, glm::value_ptr(ka));
 
 
@@ -169,6 +169,13 @@ void SolarPanel::createObject()
     positions.push_back(glm::vec3(_longside/2.0f,newHight,-zChange)+translate);   //2
     positions.push_back(glm::vec3(-_longside/2.0f,newHight,-zChange)+translate);  //3
 
+    glm::vec3 normal = glm::normalize(glm::cross(positions.at(2)-positions.at(0),positions.at(1)-positions.at(0)));
+
+    normals.push_back(normal);
+    normals.push_back(normal);
+    normals.push_back(normal);
+    normals.push_back(normal);
+
 //    std::cout << "Test Position: x=" << positions.at(0).x << ", y=" << positions.at(0).y << ", z=" << positions.at(0).z << std::endl;
 
     texCoords.push_back(glm::vec2(1,0.5f));
@@ -200,35 +207,44 @@ void SolarPanel::createObject()
         glBindVertexArray(_vertexArrayObject);
 
 
+        GLint posAttrib = glGetAttribLocation(_program, "vpos");
+        GLint texAttrib = glGetAttribLocation(_program, "texCoords");
+        GLint normAttrib = glGetAttribLocation(_program, "vnorm");
+
+
         // fill vertex array object with data
         GLuint position_buffer;
         glGenBuffers(1, &position_buffer);
         glBindBuffer(GL_ARRAY_BUFFER, position_buffer);
         glBufferData(GL_ARRAY_BUFFER, positions.size() * 3 * sizeof(float), positions.data(), GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(0);
-
-        // Hint: the texture coordinates buffer is missing
+        glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(posAttrib);
 
         GLuint index_buffer;
         glGenBuffers(1, &index_buffer);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-
         GLuint tex_buffer;
         glGenBuffers(1,&tex_buffer);
         glBindBuffer(GL_ARRAY_BUFFER, tex_buffer);
         glBufferData(GL_ARRAY_BUFFER, texCoords.size()*sizeof (glm::vec2),texCoords.data(),GL_STATIC_DRAW);
-        glVertexAttribPointer(1,2,GL_FLOAT,GL_TRUE,0,0);
-        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(texAttrib,2,GL_FLOAT,GL_TRUE,0,0);
+        glEnableVertexAttribArray(texAttrib);
+
+        GLuint normal_buffer;
+        glGenBuffers(1, &normal_buffer);
+        glBindBuffer(GL_ARRAY_BUFFER, normal_buffer);
+        glBufferData(GL_ARRAY_BUFFER, normals.size() * 3 * sizeof(float), normals.data(), GL_STATIC_DRAW);
+        glVertexAttribPointer(normAttrib, 3, GL_FLOAT, GL_TRUE, 0, 0);
+        glEnableVertexAttribArray(normAttrib);
 
         // unbind vertex array object
         glBindVertexArray(0);
         // delete buffers (the data is stored in the vertex array object)
         glDeleteBuffers(1, &position_buffer);
         glDeleteBuffers(1, &index_buffer);
-        glDeleteBuffers(1,&tex_buffer);
+        glDeleteBuffers(1, &tex_buffer);
 
         // check for errors
         VERIFY(CG::checkError());
